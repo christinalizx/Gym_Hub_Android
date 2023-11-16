@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Splash screen timeout in milliseconds
     private static final int SPLASH_TIMEOUT = 4000;
 
     @Override
