@@ -1,10 +1,25 @@
-package edu.northeastern.gymhub;
+package edu.northeastern.gymhub.utils;
 
-public class GymUserModel {
+public class GymUser {
     private String username;
     private String password;
     private String address;
     private int gymId;
+
+    /** Default constructor
+     */
+    public GymUser(){};
+
+    /**
+     * Constructor with params.
+     */
+    public GymUser(String username, String password, String address, int gymId){
+        this.username = username;
+        this.password = password;
+        this.address = address;
+        this.gymId = gymId;
+    }
+
 
     public String getUsername() {
         return username;
