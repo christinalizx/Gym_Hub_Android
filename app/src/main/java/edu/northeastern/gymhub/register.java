@@ -8,6 +8,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import edu.northeastern.gymhub.utils.GymUser;
+import edu.northeastern.gymhub.utils.JDBC;
+
 public class register extends AppCompatActivity {
 
     @Override
@@ -27,14 +30,14 @@ public class register extends AppCompatActivity {
                 TextView gymId = findViewById(R.id.editTextTextGym);
 
                 // Create GymUserModel object
-                GymUserModel gymUser = new GymUserModel();
+                GymUser gymUser = new GymUser();
                 gymUser.setUsername(username.getText().toString());
                 gymUser.setPassword(password.getText().toString());
                 gymUser.setAddress(address.getText().toString());
                 gymUser.setGymId(Integer.parseInt(gymId.getText().toString()));
 
                 // Insert the user into the database
-                GymUserHandler userHandler = new GymUserHandler();
+                JDBC userHandler = JDBC.getInstance();
                 boolean success = userHandler.addGymUser(gymUser);
 
                 if (success) {
