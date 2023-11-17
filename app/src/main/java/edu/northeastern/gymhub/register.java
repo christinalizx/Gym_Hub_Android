@@ -24,14 +24,14 @@ public class register extends AppCompatActivity {
                 TextView username = findViewById(R.id.editTextText2);
                 TextView password = findViewById(R.id.editTextTextPassword2);
                 TextView address = findViewById(R.id.editTextTextAddress);
+                TextView gymId = findViewById(R.id.editTextTextGym);
 
                 // Create GymUserModel object
                 GymUserModel gymUser = new GymUserModel();
                 gymUser.setUsername(username.getText().toString());
                 gymUser.setPassword(password.getText().toString());
                 gymUser.setAddress(address.getText().toString());
-                // Assuming you have a method to get the gym ID, adapt as needed
-                gymUser.setGymId(getGymId());
+                gymUser.setGymId(Integer.parseInt(gymId.getText().toString()));
 
                 // Insert the user into the database
                 GymUserHandler userHandler = new GymUserHandler();
@@ -46,11 +46,5 @@ public class register extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    // Replace this method with your logic to get the gym ID
-    private int getGymId() {
-        // Replace this with your logic to get the gym ID
-        return 1; // Dummy value, replace with actual logic
     }
 }
