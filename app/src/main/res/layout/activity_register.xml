@@ -18,7 +18,7 @@
         android:layout_marginBottom="24dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Enter a username"
+        android:hint="Enter a username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,21 +32,21 @@
         android:layout_marginBottom="24dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Enter your password"
+        android:hint="Enter your password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
 
     <EditText
-        android:id="@+id/editTextTextEmailAddress"
+        android:id="@+id/editTextTextAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
         android:layout_marginEnd="22dp"
         android:layout_marginBottom="24dp"
         android:ems="10"
-        android:inputType="textEmailAddress"
-        android:text="Enter your email address"
+        android:inputType="text"
+        android:hint="Enter your address"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2" />
@@ -59,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:background="@null"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextAddress"
         app:srcCompat="@mipmap/ic_submit_foreground" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

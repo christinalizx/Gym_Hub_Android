@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "GymHub"
 include(":app")
+include(":lib")
