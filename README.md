@@ -5,10 +5,10 @@ So I went through a lot of websites to see what we can do about our connection, 
 
 ## 1. Modified our manifest
 I added the following to grant our app accesss to network.
-'text
+···text
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-'text
+···
 
 ## 2. Replaced jdbc driver to a older version
 I went through stackoverflow and somehow they said we can't have a driver that is newer or roughly the same version as our MySQL workbench, so I replaced the 8.2.0 with 5.1.49.
