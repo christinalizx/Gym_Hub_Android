@@ -10,7 +10,7 @@ I added the following to grant our app accesss to network.
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 ````
 
-## 2. Replaced jdbc driver to a older version
+## 2. Replaced jdbc driver to an older version
 I went through stackoverflow and somehow they said we can't have a driver that is newer or roughly the same version as our MySQL workbench, so I replaced the 8.2.0 with 5.1.49.
 
 ## 3. Granted privileges to all users from MySQL.
