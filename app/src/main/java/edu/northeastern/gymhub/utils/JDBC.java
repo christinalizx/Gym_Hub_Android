@@ -10,7 +10,7 @@ import java.util.List;
 
 public class JDBC {
 
-    private static final String URL = "jdbc:mysql://database-1.cpqkz8uyycse.us-east-1.rds.amazonaws.com/gymhubdb";
+    private static final String URL = "jdbc:mysql://database-1.cpqkz8uyycse.us-east-1.rds.amazonaws.com:3306/gymhubdb";
     private static final String USERNAME = "admin";
     private static final String PASSWORD = "WKkn3q3YaPWNW8NthFWU";
     private static JDBC instance;
@@ -18,17 +18,25 @@ public class JDBC {
 
     /** Private constructor to prevent instantiation outside the class **/
     private JDBC() {
-        try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            System.out.println("Connection successful.");
-        } catch (SQLException e) {
-            System.out.println("Connection could not be established.");
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+
     }
 
     /** Static method to get the singleton instance **/
-    public static synchronized JDBC getInstance() {
+    public static JDBC getInstance() {
         if (instance == null) {
             instance = new JDBC();
         }
@@ -78,6 +86,24 @@ public class JDBC {
         }
 
         return false;
+    }
+
+    /** Gets gym_id based on gym_name **/
+    public int getGymIdFromName(String gymName) {
+        try {
+            String query = "SELECT gym_id FROM gyms WHERE gym_name = ?";
+            try (PreparedStatement statement = instance.connection.prepareStatement(query)) {
+                statement.setString(1, gymName);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt("gym_id");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Return -1 if gym ID is not found (you may want to handle this case appropriately)
     }
 
     /** Closes connection to the database **/
