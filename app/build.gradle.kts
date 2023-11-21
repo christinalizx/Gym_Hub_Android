@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "edu.northeastern.gymhub"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "edu.northeastern.gymhub"
