@@ -10,7 +10,7 @@ import java.util.List;
 
 public class JDBC {
 
-    private static final String URL = "jdbc:mysql://database-1.cpqkz8uyycse.us-east-1.rds.amazonaws.com:3306/gymhubdb";
+    private static final String URL = "jdbc:mysql://database-1.cpqkz8uyycse.us-east-1.rds.amazonaws.com/gymhubdb";
     private static final String USERNAME = "admin";
     private static final String PASSWORD = "WKkn3q3YaPWNW8NthFWU";
     private static JDBC instance;
@@ -42,13 +42,16 @@ public class JDBC {
         }
         return instance;
     }
+    public Connection getConnection() {
+        return connection;
+    }
 
     public List<GymUser> getAllGymUsers() {
         List<GymUser> gymUsers = new ArrayList<>();
 
         try {
             String query = "SELECT * FROM gym_users";
-            try (PreparedStatement statement = instance.connection.prepareStatement(query);
+            try (PreparedStatement statement = connection.prepareStatement(query);
                  ResultSet resultSet = statement.executeQuery()) {
 
                 while (resultSet.next()) {
@@ -72,7 +75,7 @@ public class JDBC {
     public boolean addGymUser(GymUser gymUser) {
         try {
             String query = "INSERT INTO gym_users (username, password, address, gym_id) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement statement = instance.connection.prepareStatement(query)) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, gymUser.getUsername());
                 statement.setString(2, gymUser.getPassword());
                 statement.setString(3, gymUser.getAddress());
