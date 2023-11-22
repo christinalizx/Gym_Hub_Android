@@ -7,7 +7,7 @@ public class GymUser {
     private String username;
     private String password;
     private String address;
-    private int gymId;
+    private String gym;
     private List<Workout> workoutLog;
 
     /** Default constructor
@@ -17,11 +17,11 @@ public class GymUser {
     /**
      * Constructor with params.
      */
-    public GymUser(String username, String password, String address, int gymId){
+    public GymUser(String username, String password, String address, String gym){
         this.username = username;
         this.password = password;
         this.address = address;
-        this.gymId = gymId;
+        this.gym = gym;
         this.workoutLog = new ArrayList<>();
     }
 
@@ -55,11 +55,11 @@ public class GymUser {
         this.address = address;
     }
 
-    public int getGymId() {
-        return gymId;
+    public String getGym() {
+        return gym;
     }
 
-    public void setGymId(int gymId) {
-        this.gymId = gymId;
+    public void setGym(String gym) {
+        this.gym = gym;
     }
 }
