@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Top Title Section -->
+    <TextView
+        android:id="@+id/textViewWorkout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Workout Log"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textColor="@color/white"
+        android:background="@color/darkPurple" />
+
+    <!-- Date and Summary Section -->
+    <LinearLayout
+        android:id="@+id/dateSummaryLayout"
+        android:layout_below="@id/textViewWorkout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Title for Date -->
+        <TextView
+            android:id="@+id/textViewDateTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Display Today's Date -->
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Today's Date"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Title for Summary -->
+        <TextView
+            android:id="@+id/textViewSummaryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Summary"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Display Today's Workout Summary -->
+        <TextView
+            android:id="@+id/textViewSummary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No workout entered for today"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Spinner for Exercise Type -->
+        <Spinner
+            android:id="@+id/spinnerExerciseType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Choices for weight/sets/reps input -->
+        <LinearLayout
+            android:id="@+id/weightSetsRepsChoices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <EditText
+                android:id="@+id/editTextWeightChoice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Weight"
+                android:inputType="numberDecimal"
+                android:layout_marginRight="8dp"/>
+
+            <EditText
+                android:id="@+id/editTextSetsChoice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Sets"
+                android:inputType="number"
+                android:layout_marginRight="8dp"/>
+
+            <EditText
+                android:id="@+id/editTextRepsChoice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Reps"
+                android:inputType="number"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:background="@color/darkPurple"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+
+    <!-- Workout History RecycleView -->
+    <TextView
+        android:id="@+id/textViewHistoryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="History"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_below="@id/dateSummaryLayout"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewWorkoutHistory"
+        android:layout_below="@id/textViewHistoryTitle"
+        android:layout_above="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp"/>
+
+    <!-- Bottom Navigation Section -->
+    <LinearLayout
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/darkPurple"
+        android:elevation="8dp">
+
+        <ImageButton
+            android:id="@+id/imageButtonHome"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_home"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:contentDescription="TODO" />
+
+        <ImageButton
+            android:id="@+id/imageButtonWorkout"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_workout"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:contentDescription="TODO" />
+
+        <ImageButton
+            android:id="@+id/imageButtonForum"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_forum"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:contentDescription="TODO" />
+
+        <ImageButton
+            android:id="@+id/imageButtonInbox"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_inbox"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:contentDescription="TODO" />
+    </LinearLayout>
+</RelativeLayout>
