@@ -21,9 +21,11 @@ import edu.northeastern.gymhub.Utils.Callback;
 
 public class RegisterActivity extends AppCompatActivity implements Callback {
 
+    private TextView firstName;
+    private TextView lastName;
     private TextView username;
     private TextView password;
-    private TextView address;
+    private TextView email;
     private TextView gymId;
     private Button registerButton;
     private FirebaseDatabase database;
@@ -39,10 +41,12 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
         usersRef = database.getReference("users");
 
         // Get inputs
-        username = findViewById(R.id.editTextText2);
-        password = findViewById(R.id.editTextTextPassword2);
-        address = findViewById(R.id.editTextTextAddress);
-        gymId = findViewById(R.id.editTextTextGym);
+        firstName = findViewById(R.id.editTextFirstName);
+        lastName = findViewById(R.id.editTextLastName);
+        username = findViewById(R.id.editTextUsername);
+        password = findViewById(R.id.editTextPassword);
+        email = findViewById(R.id.editTextEmail);
+        gymId = findViewById(R.id.editTextGym);
         registerButton = findViewById(R.id.buttonRegister);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -68,9 +72,10 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
 
     private void registerUser(){
         GymUser newUser = new GymUser(
+                firstName + " " + lastName,
                 username.getText().toString(),
                 password.getText().toString(),
-                address.getText().toString(),
+                email.getText().toString(),
                 gymId.getText().toString()
         );
 
@@ -93,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
         if (
                 username.getText().toString().isEmpty() ||
                         password.getText().toString().isEmpty() ||
-                        address.getText().toString().isEmpty() ||
+                        email.getText().toString().isEmpty() ||
                         gymId.getText().toString().isEmpty()
         ) {
             showToast("Please fill out all fields.");
