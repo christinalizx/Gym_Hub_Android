@@ -27,45 +27,62 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Title for Date -->
-        <TextView
-            android:id="@+id/textViewDateTitle"
-            android:layout_width="wrap_content"
+        <!-- Date and Today's Date on the same line -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="8dp"/>
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
 
-        <!-- Display Today's Date -->
-        <TextView
-            android:id="@+id/textViewDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Today's Date"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="8dp"/>
+            <!-- Title for Date -->
+            <TextView
+                android:id="@+id/textViewDateTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date: "
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_marginEnd="8dp"/>
 
-        <!-- Title for Summary -->
-        <TextView
-            android:id="@+id/textViewSummaryTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Summary"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="8dp"/>
+            <!-- Display Today's Date -->
+            <TextView
+                android:id="@+id/textViewDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today's Date"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
 
-        <!-- Display Today's Workout Summary -->
-        <TextView
-            android:id="@+id/textViewSummary"
-            android:layout_width="wrap_content"
+        <!-- Summary and Workout Summary on the same line -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No workout entered for today"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="8dp"/>
+            android:orientation="horizontal">
+
+            <!-- Title for Summary -->
+            <TextView
+                android:id="@+id/textViewSummaryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Summary: "
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"/>
+
+            <!-- Display Today's Workout Summary -->
+            <TextView
+                android:id="@+id/textViewSummary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No workout entered for today"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp"/>
+        </LinearLayout>
 
         <!-- Spinner for Exercise Type -->
         <Spinner
@@ -124,7 +141,7 @@
         android:id="@+id/textViewHistoryTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="History"
+        android:text="  History"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/black"
