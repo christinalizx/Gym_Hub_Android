@@ -71,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
                 username.getText().toString(),
                 password.getText().toString(),
                 address.getText().toString(),
-                Integer.valueOf(gymId.getText().toString())
+                gymId.getText().toString()
         );
 
         // Write to firebase
