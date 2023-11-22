@@ -1,10 +1,14 @@
 package edu.northeastern.gymhub.Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GymUser {
     private String username;
     private String password;
     private String address;
     private int gymId;
+    private List<Workout> workoutLog;
 
     /** Default constructor
      */
@@ -18,8 +22,14 @@ public class GymUser {
         this.password = password;
         this.address = address;
         this.gymId = gymId;
+        this.workoutLog = new ArrayList<>();
     }
 
+    public void addWorkout(Workout workout){
+        this.workoutLog.add(workout);
+    }
+
+    public List<Workout> getWorkoutLog(){return this.workoutLog;}
 
     public String getUsername() {
         return username;

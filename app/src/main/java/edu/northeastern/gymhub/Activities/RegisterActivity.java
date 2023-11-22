@@ -2,6 +2,7 @@ package edu.northeastern.gymhub.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -78,6 +79,7 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         showToast("You are now a GymHub member.");
+                        startActivity(new Intent(RegisterActivity.this, HomepageActivity.class));
                     } else {
                         showToast("There has been an error with your registration.");
                     }
@@ -121,6 +123,6 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
     }
 
     private void showToast(String message){
-        Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }
