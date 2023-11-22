@@ -16,7 +16,7 @@
         android:gravity="center"
         android:padding="16dp"
         android:textColor="@color/white"
-        android:background="@color/darkBlue" />
+        android:background="@color/darkPurple" />
 
     <!-- Middle Section with RecyclerViews -->
     <LinearLayout
@@ -100,7 +100,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:background="@color/darkBlue"
+        android:background="@color/darkPurple"
         android:elevation="8dp">
 
         <ImageButton
