@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GymUser {
+    private String name;
     private String username;
     private String password;
-    private String address;
+    private String email;
     private String gym;
     private List<Workout> workoutLog;
 
@@ -17,10 +18,11 @@ public class GymUser {
     /**
      * Constructor with params.
      */
-    public GymUser(String username, String password, String address, String gym){
+    public GymUser(String name, String username, String password, String email, String gym){
+        this.name = name;
         this.username = username;
         this.password = password;
-        this.address = address;
+        this.email = email;
         this.gym = gym;
         this.workoutLog = new ArrayList<>();
     }
@@ -31,6 +33,8 @@ public class GymUser {
 
     public List<Workout> getWorkoutLog(){return this.workoutLog;}
 
+    public String getName(){return this.name;}
+    public void setName(String name){this.name = name;}
     public String getUsername() {
         return username;
     }
@@ -47,12 +51,12 @@ public class GymUser {
         this.password = password;
     }
 
-    public String getAddress() {
-        return address;
+    public String getEmail() {
+        return email;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getGym() {
