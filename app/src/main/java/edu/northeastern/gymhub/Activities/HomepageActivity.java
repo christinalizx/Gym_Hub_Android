@@ -151,6 +151,7 @@ public class HomepageActivity extends AppCompatActivity {
         // You may need to adjust the formatting based on your needs
         return startTime + " - " + finishTime;
     }
+
     private void fetchAndDisplayHourlyTraffic() {
         // Get the current day
         String currentDay = getCurrentDay();
@@ -174,27 +175,41 @@ public class HomepageActivity extends AppCompatActivity {
     private void handleHourlyTrafficChange(DataSnapshot dataSnapshot) {
         List<Integer> hours = new ArrayList<>();
         List<Integer> trafficValues = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
 
         // Iterate through days (e.g., "Monday", "Tuesday", etc.)
         for (DataSnapshot daySnapshot : dataSnapshot.getChildren()) {
             if (daySnapshot.hasChildren()) {
-                    // Extracting the traffic value for each hour
-                    int hour = daySnapshot.child("hour").getValue(Integer.class);
-                    int traffic = daySnapshot.child("traffic").getValue(Integer.class);
+                // Extracting the traffic value for each hour
+                int hour = daySnapshot.child("hour").getValue(Integer.class);
+                int traffic = daySnapshot.child("traffic").getValue(Integer.class);
+                int color = determineColor(traffic);
 
-                    // Append data to arrays
-                    hours.add(hour);
-                    trafficValues.add(traffic);
-                }
+                // Append data to arrays
+                hours.add(hour);
+                trafficValues.add(traffic);
+                colors.add(color);
             }
+        }
         // Now you have the list of hours and traffic values for all days
-        setupBarChart(hours, trafficValues);
+        setupBarChart(hours, trafficValues, colors);
+    }
+
+    private int determineColor(int traffic) {
+        // Customize the color based on the number of people
+        if (traffic > 200) {
+            return Color.rgb(255, 69, 0); // Dark Red
+        } else if (traffic >= 150 && traffic <= 200) {
+            return Color.rgb(255, 99, 71); // Red
+        } else if (traffic >= 100 && traffic < 150) {
+            return Color.rgb(255, 165, 0); // Orange
+        } else {
+            return Color.rgb(144, 238, 144); // Light Green
+        }
     }
 
 
-
-
-    private void setupBarChart(List<Integer> hours, List<Integer> trafficValues) {
+    private void setupBarChart(List<Integer> hours, List<Integer> trafficValues, List<Integer> colors) {
         List<BarEntry> entries = new ArrayList<>();
 
         for (int i = 0; i < hours.size(); i++) {
@@ -202,6 +217,7 @@ public class HomepageActivity extends AppCompatActivity {
         }
 
         BarDataSet dataSet = new BarDataSet(entries, "Hourly Traffic");
+        dataSet.setColors(colors);
 
         BarData data = new BarData(dataSet);
 

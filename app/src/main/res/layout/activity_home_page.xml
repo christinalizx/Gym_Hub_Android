@@ -18,80 +18,87 @@
         android:textColor="@color/white"
         android:background="@color/darkPurple" />
 
-    <!-- Middle Section with RecyclerViews -->
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_below="@id/textViewGymName"
         android:layout_above="@+id/bottomNavigation"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <!-- RecycleView for Traffic -->
+        <!-- Middle Section with RecyclerViews -->
         <LinearLayout
+            android:layout_below="@id/textViewGymName"
+            android:layout_above="@+id/bottomNavigation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Traffic"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:padding="8dp"/>
-
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/barChart"
+            <!-- RecycleView for Traffic -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center" />
-
-        </LinearLayout>
-
-        <!-- RecycleView for Schedule -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Today's Class Schedules: "
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:padding="8dp"/>
+                android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewSchedule"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Traffic"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:padding="8dp" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center" />
+
+            </LinearLayout>
+
+            <!-- RecycleView for Schedule -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="16dp"/>
-        </LinearLayout>
-
-        <!-- RecycleView for Today's Plan -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Today's Plan"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:padding="8dp"/>
+                android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewTodayPlan"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Today's Class Schedules: "
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:padding="8dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewSchedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:padding="16dp" />
+            </LinearLayout>
+
+            <!-- RecycleView for Today's Plan -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="16dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Today's Plan"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:padding="8dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTodayPlan"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:padding="16dp" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- Bottom Navigation Section -->
     <LinearLayout
@@ -147,11 +154,6 @@
             tools:visibility="visible"
             android:clickable="true"
             android:contentDescription="TODO" />
-
-
-
-
-
 
 
     </LinearLayout>
