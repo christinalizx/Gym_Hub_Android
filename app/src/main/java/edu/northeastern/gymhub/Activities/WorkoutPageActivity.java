@@ -48,15 +48,7 @@ public class WorkoutPageActivity extends AppCompatActivity {
         Spinner exerciseTypeSpinner = findViewById(R.id.spinnerExerciseType);
         String[] exerciseTypes = new String[]{
                 "Cardiovascular Exercises",
-                "Strength Training Exercises",
-                "Flexibility and Mobility Exercises",
-                "Functional Training Exercises",
-                "High-Intensity Interval Training (HIIT)",
-                "CrossFit Workouts",
-                "Cardiovascular Machines",
-                "Core Exercises",
-                "Group Fitness Classes",
-                "Sport-Specific Training"
+                "Strength Training Exercises"
         };
         ArrayAdapter<String> exerciseTypeAdapter = new ArrayAdapter<>(
                 getApplicationContext(), R.layout.simple_dropdown_item, exerciseTypes);
@@ -104,46 +96,6 @@ public class WorkoutPageActivity extends AppCompatActivity {
                 editTextWeightChoice.setHint("Weight");
                 editTextSetsChoice.setHint("Sets");
                 editTextRepsChoice.setHint("Reps");
-                break;
-            case "Flexibility and Mobility Exercises":
-                editTextWeightChoice.setHint("Intensity");
-                editTextSetsChoice.setHint("Duration (min)");
-                editTextRepsChoice.setHint("Repetitions");
-                break;
-            case "Functional Training Exercises":
-                editTextWeightChoice.setHint("EquipWeight");
-                editTextSetsChoice.setHint("Sets");
-                editTextRepsChoice.setHint("Reps");
-                break;
-            case "High-Intensity Interval Training (HIIT)":
-                editTextWeightChoice.setHint("Intensity");
-                editTextSetsChoice.setHint("Rounds");
-                editTextRepsChoice.setHint("Work/Rest Time");
-                break;
-            case "CrossFit Workouts":
-                editTextWeightChoice.setHint("Weight");
-                editTextSetsChoice.setHint("Rounds");
-                editTextRepsChoice.setHint("Reps");
-                break;
-            case "Cardiovascular Machines":
-                editTextWeightChoice.setHint("Resistance");
-                editTextSetsChoice.setHint("Duration (min)");
-                editTextRepsChoice.setHint("Intensity Level");
-                break;
-            case "Core Exercises":
-                editTextWeightChoice.setHint("Difficulty");
-                editTextSetsChoice.setHint("Duration (min)");
-                editTextRepsChoice.setHint("Repetitions");
-                break;
-            case "Group Fitness Classes":
-                editTextWeightChoice.setHint("EquipWeight");
-                editTextSetsChoice.setHint("Duration (min)");
-                editTextRepsChoice.setHint("Intensity Level");
-                break;
-            case "Sport-Specific Training":
-                editTextWeightChoice.setHint("EquipWeight");
-                editTextSetsChoice.setHint("Duration (min)");
-                editTextRepsChoice.setHint("Repetitions");
                 break;
             default:
                 // Reset to default hints

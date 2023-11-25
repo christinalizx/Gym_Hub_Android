@@ -5,7 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,18 +19,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 import edu.northeastern.gymhub.Models.GymUser;
 import edu.northeastern.gymhub.R;
 import edu.northeastern.gymhub.Utils.Callback;
 
 public class RegisterActivity extends AppCompatActivity implements Callback {
 
-    private TextView firstName;
-    private TextView lastName;
-    private TextView username;
-    private TextView password;
-    private TextView email;
-    private TextView gymId;
+    private EditText firstName; // Changed from TextView to EditText
+    private EditText lastName; // Changed from TextView to EditText
+    private EditText username;
+    private EditText password;
+    private EditText email;
+    private Spinner gym;
     private Button registerButton;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
@@ -36,18 +42,25 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Connect to database
+        // Connect to the database
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("users");
 
-        // Get inputs
+        // Get input fields
         firstName = findViewById(R.id.editTextFirstName);
         lastName = findViewById(R.id.editTextLastName);
         username = findViewById(R.id.editTextUsername);
         password = findViewById(R.id.editTextPassword);
         email = findViewById(R.id.editTextEmail);
-        gymId = findViewById(R.id.editTextGym);
+        gym = findViewById(R.id.spinnerGym);
         registerButton = findViewById(R.id.buttonRegister);
+
+        String[] options = new String[]{"Marino","IronFit", "PowerGym", "FitsZone", "FlexWell"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                getApplicationContext(), R.layout.simple_dropdown_item, options);
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        gym.setAdapter(adapter);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,28 +71,28 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
 
     }
 
-    /** Method from Callback interface, registers user if all inputs are correct **/
+    // Callback method
     @Override
     public void onContinue() {
         registerUser();
     }
 
-    /** Method from Callback interface to handle in event of an error **/
+    // Callback method
     @Override
     public void onError() {
-
+        // Handle error if needed
     }
 
-    private void registerUser(){
+    private void registerUser() {
         GymUser newUser = new GymUser(
-                firstName + " " + lastName,
+                firstName.getText().toString() + " " + lastName.getText().toString(),
                 username.getText().toString(),
                 password.getText().toString(),
                 email.getText().toString(),
-                gymId.getText().toString()
+                gym.getSelectedItem().toString()
         );
 
-        // Write to firebase
+        // Write to Firebase
         usersRef.child(newUser.getUsername()).setValue(newUser)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -89,29 +102,22 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
                         showToast("There has been an error with your registration.");
                     }
                 });
-
     }
 
-    /** Checks inputs. First checks for any empty fields, then checks username doesn't already exist **/
     private void checkInputs() {
-        // Check if any field is empty
-        if (
-                username.getText().toString().isEmpty() ||
-                        password.getText().toString().isEmpty() ||
-                        email.getText().toString().isEmpty() ||
-                        gymId.getText().toString().isEmpty()
-        ) {
+        if (username.getText().toString().isEmpty() ||
+                password.getText().toString().isEmpty() ||
+                email.getText().toString().isEmpty() ||
+                gym.getSelectedItem().toString().isEmpty()) {
             showToast("Please fill out all fields.");
             return;
         }
 
-        // If all fields full, check if the username already exists in the database
         String inputUsername = username.getText().toString();
         usersRef.child(inputUsername).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Username already exists
                     showToast("Username already exists. Please choose a different username.");
                 } else {
                     onContinue();
@@ -120,14 +126,12 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Handle any errors that may occur
                 showToast("An error occurred. Please try again.");
             }
         });
-
     }
 
-    private void showToast(String message){
+    private void showToast(String message) {
         Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }
