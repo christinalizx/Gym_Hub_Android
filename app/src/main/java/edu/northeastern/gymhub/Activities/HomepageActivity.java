@@ -52,7 +52,7 @@ public class HomepageActivity extends AppCompatActivity {
 
         // Inside onCreate() method, after setting the content view
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        gymName = preferences.getString("GymName", "Default Gym Name");
+        gymName = preferences.getString("GymName", "Default Gym Name").toLowerCase();
         TextView gymNameTextView = findViewById(R.id.textViewGymName);
         gymNameTextView.setText(gymName);
 
