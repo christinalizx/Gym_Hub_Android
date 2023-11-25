@@ -129,22 +129,19 @@
         android:inputType="text"
         android:padding="5dp"
         android:textColorHint="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/editTextGym"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerGym"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextUsername" />
 
-    <EditText
-        android:id="@+id/editTextGym"
+    <Spinner
+        android:id="@+id/spinnerGym"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
         android:layout_marginEnd="22dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/edittext_border"
-        android:ems="10"
-        android:hint="Select a gym"
-        android:inputType="text"
         android:padding="6dp"
         android:textColorHint="@android:color/white"
         android:textColor="@android:color/white"
@@ -163,6 +160,6 @@
         android:text="Sign Up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextGym" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerGym" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
