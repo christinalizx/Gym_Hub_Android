@@ -2,7 +2,9 @@ package edu.northeastern.gymhub.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -13,18 +15,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.stone.vega.library.VegaLayoutManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 import java.util.List;
+import java.util.Locale;
 
 import edu.northeastern.gymhub.Models.ScheduleItem;
 import edu.northeastern.gymhub.R;
@@ -34,6 +40,10 @@ public class HomepageActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ScheduleAdapter scheduleAdapter;
     private DatabaseReference schedulesRef;
+    private DatabaseReference trafficRef;
+    private BarChart barChart;
+
+    private String gymName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +52,7 @@ public class HomepageActivity extends AppCompatActivity {
 
         // Inside onCreate() method, after setting the content view
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        String gymName = preferences.getString("GymName", "Default Gym Name");
+        gymName = preferences.getString("GymName", "Default Gym Name");
         TextView gymNameTextView = findViewById(R.id.textViewGymName);
         gymNameTextView.setText(gymName);
 
@@ -59,6 +69,7 @@ public class HomepageActivity extends AppCompatActivity {
 
         // Connect to the schedules node in the database
         schedulesRef = FirebaseDatabase.getInstance().getReference("schedules").child(gymName);
+        trafficRef = FirebaseDatabase.getInstance().getReference("gyms").child(gymName);
 
         // Initialize RecyclerView and its adapter
         recyclerView = findViewById(R.id.recyclerViewSchedule);
@@ -66,8 +77,13 @@ public class HomepageActivity extends AppCompatActivity {
         scheduleAdapter = new ScheduleAdapter();
         recyclerView.setAdapter(scheduleAdapter);
 
+
         // Fetch and display today's schedule
         fetchAndDisplayTodaySchedule();
+
+        barChart = findViewById(R.id.barChart);
+        fetchAndDisplayHourlyTraffic();
+
     }
 
     private void fetchAndDisplayTodaySchedule() {
@@ -120,6 +136,8 @@ public class HomepageActivity extends AppCompatActivity {
 
         // Notify the adapter that the data has changed
         scheduleAdapter.notifyDataSetChanged();
+
+
     }
 
 
@@ -133,4 +151,67 @@ public class HomepageActivity extends AppCompatActivity {
         // You may need to adjust the formatting based on your needs
         return startTime + " - " + finishTime;
     }
+    private void fetchAndDisplayHourlyTraffic() {
+        // Get the current day
+        String currentDay = getCurrentDay();
+
+        // Add a ValueEventListener to fetch data from Firebase for today's hourly traffic
+        trafficRef.child("hourly_traffic").child(currentDay).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Call the method to handle hourly traffic data changes
+                handleHourlyTrafficChange(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(HomepageActivity.this, "Failed to load hourly traffic data.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Method to handle hourly traffic data changes
+    private void handleHourlyTrafficChange(DataSnapshot dataSnapshot) {
+        List<Integer> hours = new ArrayList<>();
+        List<Integer> trafficValues = new ArrayList<>();
+
+        // Iterate through days (e.g., "Monday", "Tuesday", etc.)
+        for (DataSnapshot daySnapshot : dataSnapshot.getChildren()) {
+            if (daySnapshot.hasChildren()) {
+                    // Extracting the traffic value for each hour
+                    int hour = daySnapshot.child("hour").getValue(Integer.class);
+                    int traffic = daySnapshot.child("traffic").getValue(Integer.class);
+
+                    // Append data to arrays
+                    hours.add(hour);
+                    trafficValues.add(traffic);
+                }
+            }
+        // Now you have the list of hours and traffic values for all days
+        setupBarChart(hours, trafficValues);
+    }
+
+
+
+
+    private void setupBarChart(List<Integer> hours, List<Integer> trafficValues) {
+        List<BarEntry> entries = new ArrayList<>();
+
+        for (int i = 0; i < hours.size(); i++) {
+            entries.add(new BarEntry(hours.get(i), trafficValues.get(i)));
+        }
+
+        BarDataSet dataSet = new BarDataSet(entries, "Hourly Traffic");
+
+        BarData data = new BarData(dataSet);
+
+        // Set the data to the chart
+        barChart.setData(data);
+
+        // Customize the appearance of the chart if needed
+
+        // Refresh the chart to update the display
+        barChart.invalidate();
+    }
+
 }
