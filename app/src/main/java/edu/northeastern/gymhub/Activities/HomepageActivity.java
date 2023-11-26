@@ -67,6 +67,16 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
 
+        // Go to forum page
+        ImageButton forum = findViewById(R.id.imageButtonForum);
+        forum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomepageActivity.this, ForumActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         // Go to workout page
         ImageButton workout = findViewById(R.id.imageButtonWorkout);
