@@ -56,6 +56,18 @@ public class HomepageActivity extends AppCompatActivity {
         TextView gymNameTextView = findViewById(R.id.textViewGymName);
         gymNameTextView.setText(gymName);
 
+        // Settings page
+        ImageButton settingsButton = findViewById(R.id.imageButtonSettings);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create an Intent to start the settings activity
+                Intent intent = new Intent(HomepageActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         // Go to workout page
         ImageButton workout = findViewById(R.id.imageButtonWorkout);
         workout.setOnClickListener(new View.OnClickListener() {
