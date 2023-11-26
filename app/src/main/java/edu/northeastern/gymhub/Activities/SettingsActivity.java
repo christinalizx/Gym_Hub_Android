@@ -3,12 +3,18 @@ package edu.northeastern.gymhub.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Patterns;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
@@ -21,14 +27,18 @@ import edu.northeastern.gymhub.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    // TODO ADD LOGOUT FUNCTIONALITY
+
     private ImageButton imageButtonBackArrow;
     private TextView textViewName;
     private TextView textViewUsername;
     private TextView textViewUserEmail;
     private TextView textViewUserGym;
+    private LinearLayout emailLayout;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
     private String username;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +65,15 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        // Set edit email
+        emailLayout = findViewById(R.id.linearLayoutEmail);
+        emailLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showEmailDialog();
+            }
+        });
+
         // Connect to the database
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("users");
@@ -67,6 +86,7 @@ public class SettingsActivity extends AppCompatActivity {
                     String name = dataSnapshot.child("name").getValue(String.class);
                     String email = dataSnapshot.child("email").getValue(String.class);
                     String gym = dataSnapshot.child("gym").getValue(String.class);
+                    password = dataSnapshot.child("password").getValue(String.class);
 
                     // Update UI with retrieved data
                     textViewName.setText(name);
@@ -88,7 +108,75 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void showEmailDialog() {
+        // Inflate the dialog layout
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_editemail, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView);
+
+        // Find views in the inflated layout
+        final EditText editTextNewEmail = dialogView.findViewById(R.id.editTextNewEmail);
+        final EditText editPassword = dialogView.findViewById(R.id.editPassword);
+        Button buttonCancel = dialogView.findViewById(R.id.buttonCancel);
+        Button buttonUpdate = dialogView.findViewById(R.id.buttonUpdate);
+
+        // Create and show the dialog
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Set click listeners for Cancel and Update buttons
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        buttonUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get the new email and password
+                String newEmail = editTextNewEmail.getText().toString().trim();
+                String newPassword = editPassword.getText().toString().trim();
+
+                // Check if the provided email is valid
+                if (!Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
+                    showToast("Please enter a valid email");
+                    return;
+                }
+
+                // Check if new email and password are not empty
+                if (!newEmail.isEmpty() && !newPassword.isEmpty()) {
+                    // Check if the provided password matches the password retrieved from the database
+                    if (newPassword.equals(password)) {
+                        // Passwords match, update email in the database
+                        updateEmail(newEmail);
+                        dialog.dismiss();
+                    } else {
+                        showToast("Incorrect password. Please enter the correct password.");
+                    }
+                } else {
+                    Toast.makeText(SettingsActivity.this, "Please fill out all fields.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void updateEmail(String newEmail) {
+        // Update email in Firebase
+        usersRef.child(username).child("email").setValue(newEmail);
+
+        // Update the local UI
+        textViewUserEmail.setText(newEmail);
+
+        Toast.makeText(SettingsActivity.this, "Email updated", Toast.LENGTH_SHORT).show();
+    }
+
     private void handleDatabaseError(DatabaseError databaseError) {
         Toast.makeText(SettingsActivity.this, "Database Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(SettingsActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }
