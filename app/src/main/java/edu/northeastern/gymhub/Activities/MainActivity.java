@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); // Create a new XML layout for the splash screen
 
-        // Use a Handler to delay the opening of the main activity
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
