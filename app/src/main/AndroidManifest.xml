@@ -28,8 +28,17 @@
             android:name=".Activities.SignInActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.ForumActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.EditArticleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.PostContentActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
