@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.northeastern.gymhub.Adapters.FindUsersAdapter;
 import edu.northeastern.gymhub.Models.GymUser;
@@ -87,13 +88,28 @@ public class FindUsersActivity extends AppCompatActivity {
             }
         });
 
+
         setUserInfo();
-        setAdapter();
+        usersRef.child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Add connection to user
+                GymUser curUser = snapshot.getValue(GymUser.class);
+                List<String> connections = curUser.getConnections();
+                setAdapter(connections);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                handleDatabaseError(error);
+            }
+        });
     }
 
-    private void setAdapter() {
+    private void setAdapter(List<String> connections) {
         setOnClickListener();
-        FindUsersAdapter adapter = new FindUsersAdapter(usersList, listener);
+        FindUsersAdapter adapter = new FindUsersAdapter(this, usersList, listener, connections);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -116,7 +132,6 @@ public class FindUsersActivity extends AppCompatActivity {
     private void addNewConnection(GymUser connection) {
         if (curUsername != null && connection != null && connection.getClass().equals(GymUser.class)) {
 
-            // Fetch current user and GymUser object
             usersRef.child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -144,8 +159,11 @@ public class FindUsersActivity extends AppCompatActivity {
                     handleDatabaseError(error);
                 }
             });
+        } else {
+            showToast("Error fetching user data.");
         }
     }
+
 
     /** Set users to recycler view **/
     private void setUserInfo() {

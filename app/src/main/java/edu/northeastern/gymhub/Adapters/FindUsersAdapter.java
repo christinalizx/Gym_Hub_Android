@@ -1,5 +1,6 @@
 package edu.northeastern.gymhub.Adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,9 +8,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.northeastern.gymhub.Models.GymUser;
 import edu.northeastern.gymhub.R;
@@ -18,10 +21,14 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
 
     private ArrayList<GymUser> usersList;
     private RecyclerClickListener listener;
+    private List<String> connections;
+    private Context context;
 
-    public FindUsersAdapter(ArrayList<GymUser> usersList, RecyclerClickListener listener) {
+    public FindUsersAdapter(Context context, ArrayList<GymUser> usersList, RecyclerClickListener listener, List<String> connections) {
+        this.context = context;
         this.usersList = usersList;
         this.listener = listener;
+        this.connections = connections;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -33,7 +40,7 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
             super(view);
             userName = view.findViewById(R.id.textViewUserName);
             buttonFollow = view.findViewById(R.id.buttonFollow);
-//            buttonUnfollow = view.findViewById(R.id.buttonUnfollow);
+            buttonUnfollow = view.findViewById(R.id.buttonUnfollow);
 
             // Set OnClickListener for buttonFollow
             buttonFollow.setOnClickListener(new View.OnClickListener() {
@@ -61,22 +68,21 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
         String name = usersList.get(position).getName();
         holder.userName.setText(name);
 
-        //holder.buttonUnfollow.setVisibility(View.GONE);
+        holder.buttonUnfollow.setVisibility(View.GONE);
 
-//        // Check if the current user is in the connections of the displayed user
-//        if (curUser != null) {
-//            String displayedUser = usersList.get(position).getUsername();
-//            boolean isFollowing = curUser.getConnections().contains(displayedUser);
-//
-//            // Set the visibility of buttons based on the relationship between users
-//            if (isFollowing) {
-//                holder.buttonFollow.setVisibility(View.GONE);
-//                holder.buttonUnfollow.setVisibility(View.VISIBLE);
-//            } else {
-//                holder.buttonFollow.setVisibility(View.VISIBLE);
-//                holder.buttonUnfollow.setVisibility(View.GONE);
-//            }
-//        }
+        // Check if the current user is in the connections of the displayed user
+        String displayedUser = usersList.get(position).getUsername();
+        boolean isFollowing = connections.contains(displayedUser);
+
+        // Set the visibility of buttons based on the relationship between users
+        if (isFollowing) {
+            holder.buttonFollow.setVisibility(View.GONE);
+            holder.buttonUnfollow.setVisibility(View.VISIBLE);
+        } else {
+            holder.buttonFollow.setVisibility(View.VISIBLE);
+            holder.buttonUnfollow.setVisibility(View.GONE);
+            }
+
     }
 
     @Override
