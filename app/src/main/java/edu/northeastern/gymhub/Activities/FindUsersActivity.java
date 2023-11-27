@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -32,7 +33,6 @@ public class FindUsersActivity extends AppCompatActivity {
     private FindUsersAdapter.RecyclerClickListener listener;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
-    private DatabaseReference connectionsRef;
     private String curUsername;
     private GymUser curUser;
     private ImageButton imageButtonBackArrow;
@@ -42,9 +42,6 @@ public class FindUsersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_users);
 
-        usersList = new ArrayList<>();
-        recyclerView = findViewById(R.id.recyclerViewFindUsers);
-
         // Acquire user's username
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         curUsername = preferences.getString("Username", "Default User");
@@ -52,8 +49,8 @@ public class FindUsersActivity extends AppCompatActivity {
         // Connect to the database
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("users");
-        connectionsRef = database.getReference("connections");
 
+        // Recycler view
         usersList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerViewFindUsers);
 
@@ -88,6 +85,7 @@ public class FindUsersActivity extends AppCompatActivity {
             }
         });
 
+        //getCurrentUser();
         setUserInfo();
         setAdapter();
     }
@@ -116,15 +114,12 @@ public class FindUsersActivity extends AppCompatActivity {
     /** Adds the new connection to the users list in the firebase **/
     private void addNewConnection(GymUser connection) {
         if (curUsername != null && connection != null) {
-            // Retrieve user data from Firebase
-            DatabaseReference currentUserRef = usersRef.child(curUsername);
-
-            currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            usersRef.orderByKey().equalTo(curUsername).addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        // Add user to connections list
-                        GymUser curUser = dataSnapshot.getValue(GymUser.class);
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    GymUser curUser = snapshot.getValue(GymUser.class);
+
+                    if (curUser != null) {
                         curUser.addConnection(connection.getUsername());
 
                         // Update database
@@ -136,23 +131,87 @@ public class FindUsersActivity extends AppCompatActivity {
                                         showToast("Unable to follow user.");
                                     }
                                 });
+
                     } else {
-                        // Handle the case where the username does not exist in the database
-                        // You can show an error message or take appropriate action
-                        showToast("User not found in the database");
+                        showToast("Failed to parse user data");
                     }
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    // Handle database error
-                    handleDatabaseError(databaseError);
+                public void onCancelled(@NonNull DatabaseError error) {
+                    handleDatabaseError(error);
                 }
             });
+
         } else {
-            // Handle null cases
-            showToast("Invalid user or connection");
+            showToast("Error finding user.");
         }
+
+//            usersRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    GymUser curUser = snapshot.getValue(GymUser.class);
+//                    showToast("user " + curUser.getName());
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                    // Handle database error
+//                    handleDatabaseError(error);
+//                }
+//            });
+
+            // Update user connections list
+//            curUser.addConnection(connection.getUsername());
+//
+//            showToast("following" + connection.getName());
+
+//            // Update database
+//            usersRef.child(curUsername).setValue(curUser)
+//                    .addOnCompleteListener(task -> {
+//                        if (task.isSuccessful()) {
+//                            showToast("You are now following " + connection.getName());
+//                        } else {
+//                            showToast("Unable to follow user.");
+//                        }
+//                    });
+
+//            // Retrieve user data from Firebase
+//            DatabaseReference currentUserRef = usersRef.child(curUsername);
+//
+//            currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    if (dataSnapshot.exists()) {
+//                        // Add user to connections list
+//                        GymUser curUser = dataSnapshot.getValue(GymUser.class);
+//                        curUser.addConnection(connection.getUsername());
+//
+//                        // Update database
+//                        usersRef.child(curUsername).setValue(curUser)
+//                                .addOnCompleteListener(task -> {
+//                                    if (task.isSuccessful()) {
+//                                        showToast("You are now following " + connection.getName());
+//                                    } else {
+//                                        showToast("Unable to follow user.");
+//                                    }
+//                                });
+//                    } else {
+//                        // Handle the case where the username does not exist in the database
+//                        // You can show an error message or take appropriate action
+//                        showToast("User not found in the database");
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//                    // Handle database error
+//                    handleDatabaseError(databaseError);
+//                }
+//            });
+//        } else {
+//            // Handle null cases
+//            showToast("Invalid user or connection");
     }
 
     /** Set users to recycler view **/
@@ -163,6 +222,8 @@ public class FindUsersActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Clear the existing usersList to avoid duplicates
                 usersList.clear();
+
+//                GymUser gymUser = dataSnapshot.getValue(GymUser.class)
 
                 // Loop through each child node under "users"
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
@@ -197,60 +258,29 @@ public class FindUsersActivity extends AppCompatActivity {
 
     /** Fetch current user from database as a GymUser object **/
     private void getCurrentUser() {
-        if(curUsername != null){
-            // Retrieve user data from Firebase
-            DatabaseReference currentUserRef = usersRef.child(curUsername);
-            currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        if (curUsername != null) {
+            usersRef.orderByKey().equalTo(curUsername).addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        // Add user to connections list
-                        curUser = dataSnapshot.getValue(GymUser.class);
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    curUser = snapshot.getValue(GymUser.class);
+
+                    if (curUser != null) {
+                        showToast("User found: " + curUser.getName());
                     } else {
-                        // Handle the case where the username does not exist in the database
-                        // You can show an error message or take appropriate action
-                        showToast("User not found in the database");
+                        showToast("Failed to parse user data");
                     }
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    // Handle database error
-                    handleDatabaseError(databaseError);
+                public void onCancelled(@NonNull DatabaseError error) {
+                    handleDatabaseError(error);
                 }
             });
+
         } else {
-            // Handle null cases
-            showToast("Invalid user or connection");
+            showToast("Error finding user.");
         }
     }
-
-//        DatabaseReference currentUserRef = usersRef.child(curUsername);
-//
-//        currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    // Retrieve GymUser data and set curUser
-//                    curUser = dataSnapshot.getValue(GymUser.class);
-//
-//                } else {
-//                    // Handle the case where the username does not exist in the database
-//                    showToast("User not found in the database");
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                // Handle database error
-//                handleDatabaseError(databaseError);
-//            }
-//        });
-//
-//        if(curUser== null){
-//            showToast("no current users");
-//        }
-    //}
 
 
     private void handleDatabaseError(DatabaseError databaseError) {
