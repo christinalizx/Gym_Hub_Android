@@ -176,8 +176,10 @@ public class FindUsersActivity extends AppCompatActivity {
                     // Create a new GymUser object
                     GymUser gymUser = new GymUser(name, username, password, email, gym);
 
-                    // Add the GymUser to the usersList
-                    usersList.add(gymUser);
+                    if(!gymUser.getUsername().equals(curUsername)){
+                        // Add the GymUser to the usersList
+                        usersList.add(gymUser);
+                    }
                 }
 
                 // Notify the adapter that the data set has changed
