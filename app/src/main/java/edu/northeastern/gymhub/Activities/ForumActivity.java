@@ -1,10 +1,13 @@
 package edu.northeastern.gymhub.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,11 +34,18 @@ public class ForumActivity extends AppCompatActivity {
     private ForumPostsAdapter forumPostsAdapter;
     private List<Post> postList;
     private ImageView addArticleButton;
+    private String gymName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum);
+
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        gymName = preferences.getString("GymName", "Default Gym Name").toLowerCase();
+        TextView gymNameTextView = findViewById(R.id.textViewGymName);
+        gymNameTextView.setText(gymName);
+
         if (savedInstanceState != null) {
             postList = savedInstanceState.getParcelableArrayList("postList");
         } else {
@@ -46,6 +56,24 @@ public class ForumActivity extends AppCompatActivity {
         addArticleButton.setOnClickListener(view -> {
             Intent intent = new Intent(ForumActivity.this, EditArticleActivity.class);
             startActivity(intent);
+        });
+
+        ImageButton homePage = findViewById(R.id.imageButtonHome);
+        ImageButton workoutPage = findViewById(R.id.imageButtonWorkout);
+
+        homePage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ForumActivity.this,HomepageActivity.class));
+            }
+        });
+
+        workoutPage = findViewById(R.id.imageButtonWorkout);
+        workoutPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ForumActivity.this, WorkoutPageActivity.class));
+            }
         });
 
         // Listen to DB for new posts
