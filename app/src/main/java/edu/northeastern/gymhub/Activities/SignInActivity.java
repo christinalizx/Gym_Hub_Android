@@ -84,6 +84,7 @@ public class SignInActivity extends AppCompatActivity {
                         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("GymName", gymName);
+                        editor.putString("Username", username);
                         editor.apply();
 
                         Intent intent = new Intent(SignInActivity.this, HomepageActivity.class);

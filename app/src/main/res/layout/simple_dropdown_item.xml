@@ -5,4 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
-    android:textColor="@android:color/black" />
+    android:textSize="24sp"
+    android:drawableLeft="@drawable/ic_workout"
+    android:drawablePadding="4dp"
+    android:textColor="@android:color/white" />

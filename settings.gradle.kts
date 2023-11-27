@@ -1,17 +1,19 @@
 pluginManagement {
     repositories {
         google()
-        mavenCentral()
+        jcenter()
         gradlePluginPortal()
-        jcenter();
+        maven(url = "https://jitpack.io")
     }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        mavenCentral()
         jcenter()
+        mavenCentral()
+        maven(url = "https://jitpack.io")
+
     }
 }
 

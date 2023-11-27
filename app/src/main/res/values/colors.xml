@@ -25,4 +25,6 @@
     <color name="transparent">#00000000</color>
     <color name="grey">#7A7676</color>
     <color name="purple">#E680F8</color>
+    <color name="lightGreen">#B1B479</color>
+    <color name="darkestPurple">#190720</color>
 </resources>
