@@ -39,4 +39,13 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("com.scwang.smart:refresh-layout-kernel:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-classics:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-radar:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-falsify:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-material:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-two-level:2.0.3")
+    implementation ("com.scwang.smart:refresh-footer-ball:2.0.3")
+    implementation ("com.scwang.smart:refresh-footer-classics:2.0.3")
+
 }
