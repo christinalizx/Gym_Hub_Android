@@ -185,5 +185,61 @@
             android:layout_height="1dp"
             android:background="#EEEEEE"/>
 
+    <!-- Bottom Navigation Section -->
+    <LinearLayout
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/darkPurple"
+        android:elevation="8dp">
+
+        <ImageButton
+            android:id="@+id/imageButtonHome"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_home"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:contentDescription="TODO" />
+
+        <ImageButton
+            android:id="@+id/imageButtonWorkout"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_workout"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:contentDescription="TODO" />
+
+        <ImageButton
+            android:id="@+id/imageButtonForum"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_forum"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:contentDescription="TODO" />
+
+        <ImageButton
+            android:id="@+id/imageButtonInbox"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_inbox"
+            android:scaleType="centerInside"
+            tools:visibility="visible"
+            android:clickable="true"
+            android:contentDescription="TODO" />
+    </LinearLayout>
+
     </LinearLayout>
 

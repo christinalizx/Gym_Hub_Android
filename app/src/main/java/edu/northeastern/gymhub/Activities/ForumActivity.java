@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,17 @@ public class ForumActivity extends AppCompatActivity {
         addArticleButton.setOnClickListener(view -> {
             Intent intent = new Intent(ForumActivity.this, EditArticleActivity.class);
             startActivity(intent);
+        });
+
+        // Go to person page
+        ImageButton personPage = findViewById(R.id.imageButtonInbox);
+        personPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create an Intent to start the Workout activity
+                Intent intent = new Intent(ForumActivity.this, PersonalInformationDetailsPageActivity.class);
+                startActivity(intent);
+            }
         });
 
         // Listen to DB for new posts
