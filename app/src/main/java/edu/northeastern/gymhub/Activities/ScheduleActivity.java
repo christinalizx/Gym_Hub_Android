@@ -58,11 +58,8 @@ public class ScheduleActivity extends AppCompatActivity {
                 // Flatten the list of lists into a single list
                 ArrayList<Schedule> flattenedSchedules = new ArrayList<>();
                 for (ArrayList<Schedule> daySchedules : schedules) {
-                    flattenedSchedules.addAll(daySchedules);
+                    timetable.add(daySchedules);
                 }
-
-                // Add the fetched schedules to the TimetableView
-                timetable.add(flattenedSchedules);
             }
         });
 
@@ -207,8 +204,7 @@ public class ScheduleActivity extends AppCompatActivity {
             case "saturday":
                 return 5;
             default:
-                // Handle unexpected values
-                return 6; // or throw an exception, depending on your use case
+                return 6;
         }
     }
 }
