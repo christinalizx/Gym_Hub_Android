@@ -37,6 +37,9 @@
             android:name=".Activities.SignInActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.PersonalInformationDetailsPageActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.ForumActivity"
             android:exported="false" />
         <activity

@@ -76,6 +76,16 @@ public class HomepageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        // Go to person page
+        ImageButton personPage = findViewById(R.id.imageButtonInbox);
+        personPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create an Intent to start the Workout activity
+                Intent intent = new Intent(HomepageActivity.this, PersonalInformationDetailsPageActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         // Go to workout page

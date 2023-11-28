@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,6 +57,16 @@ public class ForumActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Go to person page
+        ImageButton personPage = findViewById(R.id.imageButtonInbox);
+        personPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create an Intent to start the Workout activity
+                Intent intent = new Intent(ForumActivity.this, PersonalInformationDetailsPageActivity.class);
+                startActivity(intent);
+            }
+        });
         ImageButton homePage = findViewById(R.id.imageButtonHome);
         ImageButton workoutPage = findViewById(R.id.imageButtonWorkout);
 
