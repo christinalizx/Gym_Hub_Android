@@ -1,4 +1,4 @@
-package edu.northeastern.gymhub.Adapters;
+package edu.northeastern.gymhub.Views;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -52,6 +51,17 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
                     }
                 }
             });
+
+            // Set OnClickListener for buttonUnfollow
+            buttonUnfollow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onUnfollowButtonClick(v, position);
+                    }
+                }
+            });
         }
     }
 
@@ -68,7 +78,12 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
         String name = usersList.get(position).getName();
         holder.userName.setText(name);
 
+        // Initially, make both buttons invisible and enabled
+        holder.buttonFollow.setVisibility(View.GONE);
+        holder.buttonFollow.setEnabled(true);
+
         holder.buttonUnfollow.setVisibility(View.GONE);
+        holder.buttonUnfollow.setEnabled(true);
 
         // Check if the current user is in the connections of the displayed user
         String displayedUser = usersList.get(position).getUsername();
@@ -76,14 +91,20 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
 
         // Set the visibility of buttons based on the relationship between users
         if (isFollowing) {
-            holder.buttonFollow.setVisibility(View.GONE);
             holder.buttonUnfollow.setVisibility(View.VISIBLE);
+            holder.buttonUnfollow.setEnabled(true);
+
+            holder.buttonFollow.setVisibility(View.GONE);
+            holder.buttonFollow.setEnabled(false); // Disable the follow button
         } else {
             holder.buttonFollow.setVisibility(View.VISIBLE);
-            holder.buttonUnfollow.setVisibility(View.GONE);
-            }
+            holder.buttonFollow.setEnabled(true);
 
+            holder.buttonUnfollow.setVisibility(View.GONE);
+            holder.buttonUnfollow.setEnabled(false); // Disable the unfollow button
+        }
     }
+
 
     @Override
     public int getItemCount() {
@@ -92,5 +113,6 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
 
     public interface RecyclerClickListener {
         void onFollowButtonClick(View v, int position);
+        void onUnfollowButtonClick(View v, int position);
     }
 }

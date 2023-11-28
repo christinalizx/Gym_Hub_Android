@@ -1,7 +1,6 @@
 package edu.northeastern.gymhub.Activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,12 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.northeastern.gymhub.Adapters.FindUsersAdapter;
+import edu.northeastern.gymhub.Views.FindUsersAdapter;
 import edu.northeastern.gymhub.Models.GymUser;
 import edu.northeastern.gymhub.R;
 
@@ -116,16 +113,61 @@ public class FindUsersActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    /** Sets methods to adapter listener **/
     private void setOnClickListener() {
         listener = new FindUsersAdapter.RecyclerClickListener() {
             @Override
             public void onFollowButtonClick(View v, int position) {
-                // Perform actions based on the clicked user
                 GymUser clickedUser = usersList.get(position);
                 addNewConnection(clickedUser);
 
             }
+
+            @Override
+            public void onUnfollowButtonClick(View v, int position) {
+                GymUser clickedUser = usersList.get(position);
+                removeConnection(clickedUser);
+            }
         };
+    }
+
+    /** Unfollows an user **/
+    private void removeConnection(GymUser connection) {
+        if(curUsername != null && connection != null && connection.getClass().equals(GymUser.class)){
+            usersRef.child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    GymUser curUser = snapshot.getValue(GymUser.class);
+
+                    if (curUser != null) {
+                        List<String> connections = curUser.getConnections();
+                        connections.remove(connection.getUsername());
+                        curUser.setConnections(connections);
+
+                        // Update database
+                        usersRef.child(curUsername).setValue(curUser)
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        // Notify the adapter that the data set has changed
+                                        recyclerView.getAdapter().notifyDataSetChanged();
+                                        showToast("You are no longer following " + connection.getName() + ".");
+                                    } else {
+                                        showToast("Failed to unfollow");
+                                    }
+                                });
+                    } else {
+                        showToast("Failed to retrieve current user data");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    handleDatabaseError(error);
+                }
+            });
+        } else {
+            showToast("Error fetching user data.");
+        }
     }
 
     /** Adds the new connection to the users list in the firebase **/
@@ -144,6 +186,8 @@ public class FindUsersActivity extends AppCompatActivity {
                         usersRef.child(curUsername).setValue(curUser)
                                 .addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
+                                        // Notify the adapter that the data set has changed
+                                        recyclerView.getAdapter().notifyDataSetChanged();
                                         showToast("You are now following " + connection.getName() + ".");
                                     } else {
                                         showToast("Connection failed");

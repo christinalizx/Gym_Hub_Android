@@ -33,6 +33,7 @@ public class GymUser {
         this.connections.add("");
     }
 
+    public void setConnections(List<String> connections){this.connections = connections;}
     public void addConnection(String username){
         this.connections.add(username);
     }
