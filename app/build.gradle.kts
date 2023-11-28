@@ -27,8 +27,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
-
 
 dependencies {
 
@@ -38,10 +40,19 @@ dependencies {
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.navigation:navigation-fragment:2.5.3")
+    implementation("androidx.navigation:navigation-ui:2.5.3")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("com.scwang.smart:refresh-layout-kernel:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-classics:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-radar:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-falsify:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-material:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-two-level:2.0.3")
+    implementation ("com.scwang.smart:refresh-footer-ball:2.0.3")
+    implementation ("com.scwang.smart:refresh-footer-classics:2.0.3")
     implementation ("com.stone.vega.library:VegaLayoutManager:1.0.6")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
 }

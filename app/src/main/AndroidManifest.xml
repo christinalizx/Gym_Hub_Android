@@ -16,6 +16,12 @@
         android:theme="@style/Theme.GymHub"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.FindUsersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.WorkoutPageActivity"
             android:exported="false" />
         <activity
@@ -28,8 +34,17 @@
             android:name=".Activities.SignInActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.ForumActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.EditArticleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.PostContentActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

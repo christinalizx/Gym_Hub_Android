@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -19,7 +18,6 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,6 +53,28 @@ public class HomepageActivity extends AppCompatActivity {
         gymName = preferences.getString("GymName", "Default Gym Name").toLowerCase();
         TextView gymNameTextView = findViewById(R.id.textViewGymName);
         gymNameTextView.setText(gymName);
+
+        // Settings page
+        ImageButton settingsButton = findViewById(R.id.imageButtonSettings);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create an Intent to start the settings activity
+                Intent intent = new Intent(HomepageActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Go to forum page
+        ImageButton forum = findViewById(R.id.imageButtonForum);
+        forum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomepageActivity.this, ForumActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         // Go to workout page
         ImageButton workout = findViewById(R.id.imageButtonWorkout);

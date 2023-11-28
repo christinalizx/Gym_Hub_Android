@@ -6,20 +6,41 @@
     android:layout_height="match_parent">
 
     <!-- Top Title Section -->
-    <TextView
-        android:id="@+id/textViewGymName"
+    <RelativeLayout
+        android:id="@+id/TopTitleSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Gym Name"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:padding="16dp"
-        android:textColor="@color/white"
-        android:background="@color/darkPurple" />
+        android:background="@color/darkPurple">
+
+        <TextView
+            android:id="@+id/textViewGymName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Gym Name"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textColor="@color/white" />
+
+        <ImageButton
+            android:id="@+id/imageButtonSettings"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            app:srcCompat="@drawable/ic_settings_icon"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="fitCenter"/>
+
+    </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_below="@id/textViewGymName"
+        android:layout_below="@id/TopTitleSection"
         android:layout_above="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

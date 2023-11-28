@@ -113,6 +113,14 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
             return;
         }
 
+        // TODO UNCOMMENT THE FOLLOWING CODE TO RE-ENABLE EMAIL VERIFICATION CHECKING
+
+//        // Check if the email is a valid email address
+//        if (!isValidEmail(email.getText().toString())) {
+//            showToast("Please enter a valid email address.");
+//            return;
+//        }
+
         String inputUsername = username.getText().toString();
         usersRef.child(inputUsername).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -129,6 +137,11 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
                 showToast("An error occurred. Please try again.");
             }
         });
+    }
+
+    /** Method to check if provided email is valid **/
+    private boolean isValidEmail(CharSequence target) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
     private void showToast(String message) {

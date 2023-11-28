@@ -10,6 +10,7 @@ public class GymUser {
     private String email;
     private String gym;
     private List<Workout> workoutLog;
+    private List<String> connections;
 
     /** Default constructor
      */
@@ -25,6 +26,15 @@ public class GymUser {
         this.email = email;
         this.gym = gym;
         this.workoutLog = new ArrayList<>();
+        this.connections = new ArrayList<>();
+    }
+
+    public void addConnection(String username){
+        this.connections.add(username);
+    }
+
+    public List<String> getConnections(){
+        return this.connections;
     }
 
     public void addWorkout(Workout workout){
