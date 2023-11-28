@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -84,6 +86,14 @@ public class HomepageActivity extends AppCompatActivity {
                 // Create an Intent to start the Workout activity
                 Intent intent = new Intent(HomepageActivity.this, WorkoutPageActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        Button schedule = findViewById(R.id.buttonCheckThisWeek);
+        schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomepageActivity.this, ScheduleActivity.class));
             }
         });
 
