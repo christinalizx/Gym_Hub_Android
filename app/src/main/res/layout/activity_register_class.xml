@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Top Title Section -->
+    <!-- Top Title Section -->
+    <RelativeLayout
+        android:id="@+id/TopTitleSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/darkPurple">
+
+        <TextView
+            android:id="@+id/textViewGymName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Gym Name"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <!-- Display Gym Name -->
+    <TextView
+        android:id="@+id/textViewMiddleGymName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GymName"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/black" />
+
+    <!-- Display Class Name -->
+    <TextView
+        android:id="@+id/textViewClassName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Class Name"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="8dp" />
+
+    <!-- Display Start and Finish Time -->
+    <TextView
+        android:id="@+id/textViewTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start - Finish Time"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="8dp" />
+
+
+    <!-- Button for Registration -->
+    <Button
+        android:id="@+id/buttonRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+
+
+    <!-- Bottom Navigation Section -->
+    <LinearLayout
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/darkPurple"
+        android:elevation="8dp">
+
+        <ImageButton
+            android:id="@+id/imageButtonHome"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_home"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:contentDescription="TODO" />
+
+        <ImageButton
+            android:id="@+id/imageButtonWorkout"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_workout"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:contentDescription="TODO" />
+
+        <ImageButton
+            android:id="@+id/imageButtonForum"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_forum"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:contentDescription="TODO" />
+
+        <ImageButton
+            android:id="@+id/imageButtonInbox"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_inbox"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:contentDescription="TODO" />
+    </LinearLayout>
+</RelativeLayout>

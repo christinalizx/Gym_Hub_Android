@@ -48,5 +48,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("com.stone.vega.library:VegaLayoutManager:1.0.6")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.github.tlaabs:TimetableView:1.0.3-fx1")
 
 }
