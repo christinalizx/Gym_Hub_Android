@@ -28,7 +28,7 @@ public class WorkoutPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout_page);
 
-        // Bottom button navigation
+        // Go to home page
         ImageButton home = findViewById(R.id.imageButtonHome);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,11 +37,21 @@ public class WorkoutPageActivity extends AppCompatActivity {
             }
         });
 
+        // Go to forum page
         ImageButton forum = findViewById(R.id.imageButtonForum);
         forum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(WorkoutPageActivity.this, ForumActivity.class));
+            }
+        });
+
+        // Go to person page
+        ImageButton personPage = findViewById(R.id.imageButtonInbox);
+        personPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(WorkoutPageActivity.this, PersonalInformationDetailsPageActivity.class));
             }
         });
 

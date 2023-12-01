@@ -57,19 +57,8 @@ public class ForumActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Go to person page
-        ImageButton personPage = findViewById(R.id.imageButtonInbox);
-        personPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create an Intent to start the Workout activity
-                Intent intent = new Intent(ForumActivity.this, PersonalInformationDetailsPageActivity.class);
-                startActivity(intent);
-            }
-        });
+        // Go to home page
         ImageButton homePage = findViewById(R.id.imageButtonHome);
-        ImageButton workoutPage = findViewById(R.id.imageButtonWorkout);
-
         homePage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,11 +66,21 @@ public class ForumActivity extends AppCompatActivity {
             }
         });
 
-        workoutPage = findViewById(R.id.imageButtonWorkout);
+        // Go to workout page
+        ImageButton workoutPage = findViewById(R.id.imageButtonWorkout);
         workoutPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ForumActivity.this, WorkoutPageActivity.class));
+            }
+        });
+
+        // Go to person page
+        ImageButton personPage = findViewById(R.id.imageButtonInbox);
+        personPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ForumActivity.this, PersonalInformationDetailsPageActivity.class));
             }
         });
 

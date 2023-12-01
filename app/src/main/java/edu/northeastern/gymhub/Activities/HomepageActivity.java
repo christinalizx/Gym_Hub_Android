@@ -67,35 +67,30 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
 
-        // Go to forum page
-        ImageButton forum = findViewById(R.id.imageButtonForum);
-        forum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomepageActivity.this, ForumActivity.class);
-                startActivity(intent);
-            }
-        });
-        // Go to person page
-        ImageButton personPage = findViewById(R.id.imageButtonInbox);
-        personPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create an Intent to start the Workout activity
-                Intent intent = new Intent(HomepageActivity.this, PersonalInformationDetailsPageActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
         // Go to workout page
         ImageButton workout = findViewById(R.id.imageButtonWorkout);
         workout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create an Intent to start the Workout activity
-                Intent intent = new Intent(HomepageActivity.this, WorkoutPageActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(HomepageActivity.this, WorkoutPageActivity.class));
+            }
+        });
+
+        // Go to forum page
+        ImageButton forum = findViewById(R.id.imageButtonForum);
+        forum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomepageActivity.this, ForumActivity.class));
+            }
+        });
+
+        // Go to person page
+        ImageButton personPage = findViewById(R.id.imageButtonInbox);
+        personPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomepageActivity.this, PersonalInformationDetailsPageActivity.class));
             }
         });
 
