@@ -45,22 +45,39 @@
             android:hint="Search"
             android:textSize="15sp" />
 
-        <ImageView
-            android:id="@+id/toWriteArticle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/add"
+        <ImageButton
+            android:id="@+id/toFindUsers"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_find_user"
+            android:backgroundTint="@color/darkPurple"
             android:layout_marginLeft="10dp"/>
     </LinearLayout>
 
     <!-- RecycleView for Posts -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/forumPostsRecyclerView"
-        android:layout_below="@id/search_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_above="@id/bottomNavigation"/>
+        android:layout_above="@+id/toWriteArticle"
+        android:layout_below="@id/search_home"
+        android:layout_marginBottom="296dp"
+        android:orientation="vertical" />
+
+    <!-- Floating action button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@id/toWriteArticle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottomNavigation"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="599dp"
+        app:shapeAppearanceOverlay="@style/floating_action"
+        android:src="@drawable/ic_add_action_button"/>
 
     <!-- Bottom Navigation Section -->
     <LinearLayout
@@ -116,5 +133,6 @@
             tools:visibility="visible"
             android:clickable="true"
             android:contentDescription="TODO" />
+
     </LinearLayout>
 </RelativeLayout>
