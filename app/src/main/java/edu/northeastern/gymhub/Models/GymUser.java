@@ -27,8 +27,13 @@ public class GymUser {
         this.gym = gym;
         this.workoutLog = new ArrayList<>();
         this.connections = new ArrayList<>();
+
+        // Add a default value (empty string or another default) to ensure the lists are not null
+        this.workoutLog.add(new Workout());
+        this.connections.add("");
     }
 
+    public void setConnections(List<String> connections){this.connections = connections;}
     public void addConnection(String username){
         this.connections.add(username);
     }

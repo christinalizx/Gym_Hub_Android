@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFF</color>
     <color name="darkPurple">#22092C</color>
     <color name="darkRed">#872341</color>
     <color name="red">#BE3144</color>
@@ -27,4 +27,6 @@
     <color name="purple">#E680F8</color>
     <color name="lightGreen">#B1B479</color>
     <color name="darkestPurple">#190720</color>
+    <color name="lightPurple">#D1C4E9</color>
+
 </resources>

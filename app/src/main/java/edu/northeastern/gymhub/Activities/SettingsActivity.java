@@ -37,8 +37,8 @@ public class SettingsActivity extends AppCompatActivity {
     private LinearLayout emailLayout;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
-    private String username;
-    private String password;
+    private String curUsername;
+    private String curPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         // Acquire user's username
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        username = preferences.getString("Username", "Default User");
+        curUsername = preferences.getString("Username", "Default User");
 
         // Get objects
         imageButtonBackArrow = findViewById(R.id.imageButtonBackArrow);
@@ -79,18 +79,18 @@ public class SettingsActivity extends AppCompatActivity {
         usersRef = database.getReference("users");
 
         // Retrieve user data from Firebase
-        usersRef.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+        usersRef.child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     String name = dataSnapshot.child("name").getValue(String.class);
                     String email = dataSnapshot.child("email").getValue(String.class);
                     String gym = dataSnapshot.child("gym").getValue(String.class);
-                    password = dataSnapshot.child("password").getValue(String.class);
+                    curPassword = dataSnapshot.child("password").getValue(String.class);
 
                     // Update UI with retrieved data
                     textViewName.setText(name);
-                    textViewUsername.setText(username);
+                    textViewUsername.setText(curUsername);
                     textViewUserEmail.setText(email);
                     textViewUserGym.setText(gym);
                 } else {
@@ -148,7 +148,7 @@ public class SettingsActivity extends AppCompatActivity {
                 // Check if new email and password are not empty
                 if (!newEmail.isEmpty() && !newPassword.isEmpty()) {
                     // Check if the provided password matches the password retrieved from the database
-                    if (newPassword.equals(password)) {
+                    if (newPassword.equals(curPassword)) {
                         // Passwords match, update email in the database
                         updateEmail(newEmail);
                         dialog.dismiss();
@@ -164,7 +164,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void updateEmail(String newEmail) {
         // Update email in Firebase
-        usersRef.child(username).child("email").setValue(newEmail);
+        usersRef.child(curUsername).child("email").setValue(newEmail);
 
         // Update the local UI
         textViewUserEmail.setText(newEmail);
