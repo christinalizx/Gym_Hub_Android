@@ -1,39 +1,47 @@
 package edu.northeastern.gymhub.Models;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Workout {
-    private int duration;
-    private List<Exercise> exercises;
-    private LocalDateTime datetime;
+    private String date;
+    private String type;
+    private float data1;
+    private float data2;
+    private float data3;
+    private String notes;
 
-    public Workout(){
-        this.exercises = new ArrayList<>();
+    public float getData1() {
+        return data1;
     }
 
-    public int getDuration() {
-        return duration;
+    public float getData2() {
+        return data2;
     }
 
-    public List<Exercise> getExercises() {
-        return new ArrayList<>(exercises);
+    public float getData3() {
+        return data3;
     }
 
-    public LocalDateTime getDatetime() {
-        return datetime;
+    public String getDate() {
+        return date;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public String getType() {
+        return type;
     }
 
-    public void setDatetime(LocalDateTime datetime) {
-        this.datetime = datetime;
+    public String getDataInfo() {
+        // Adjust this method based on your data structure
+        if ("Strength Training Exercises".equals(type)) {
+            return "Weight: " + data1 + ", Sets: " + data2 + ", Reps: " + data3;
+        } else if ("Cardiovascular Exercises".equals(type)) {
+            return "Duration: " + data1 + " min, Length: " + data2 + " km/miles, Pace: " + data3 + " mph/kph";
+        } else {
+            // Handle other types if needed
+            return "";
+        }
     }
 
-    public void addExercise(Exercise exercise) {
-        this.exercises.add(exercise);
+    public String getNotes() {
+        return notes;
     }
 }
+

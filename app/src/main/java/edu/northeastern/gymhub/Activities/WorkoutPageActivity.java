@@ -2,6 +2,9 @@ package edu.northeastern.gymhub.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,13 +27,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import edu.northeastern.gymhub.Models.Workout;
 import edu.northeastern.gymhub.R;
+import edu.northeastern.gymhub.Views.WorkoutHistoryAdapter;
 
 public class WorkoutPageActivity extends AppCompatActivity {
 
@@ -46,6 +53,7 @@ public class WorkoutPageActivity extends AppCompatActivity {
     private String exerciseType;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
+    private List<Workout> workoutList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +132,17 @@ public class WorkoutPageActivity extends AppCompatActivity {
                 uploadDataToFirebase();
             }
         });
+        workoutList = new ArrayList<>();
+        retrieveWorkoutListFromFirebase();
+    }
+    private int countWorkoutsForToday(String todayDate) {
+        int count = 0;
+        for (Workout workout : workoutList) {
+            if (workout.getDate().equals(todayDate)) {
+                count++;
+            }
+        }
+        return count;
     }
 
 
@@ -163,15 +182,11 @@ public class WorkoutPageActivity extends AppCompatActivity {
     }
 
     private void uploadDataToFirebase() {
-        DatabaseReference userRef = usersRef.child(userName);
-        userRef.child("workoutLogs").child("count").addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference userRef = usersRef.child(userName).child("workoutLogs");
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long counter = dataSnapshot.exists() ? (long) dataSnapshot.getValue() : 0;
-                counter++; // Increment the counter
-
-                // Update the counter in the database
-                userRef.child("workoutLogs").child("count").setValue(counter);
+                long counter = dataSnapshot.getChildrenCount(); // Get the current count
 
                 // Create a map to represent the workout log data
                 Map<String, Object> workoutData = new HashMap<>();
@@ -182,13 +197,20 @@ public class WorkoutPageActivity extends AppCompatActivity {
                 workoutData.put("type", exerciseType);
                 workoutData.put("date", getCurrentDate());
 
-                // Upload the data to the workoutLogs
-                userRef.child("workoutLogs").child("log" + counter).setValue(workoutData)
+                // Upload the data to the workoutLogs under a unique key
+                userRef.child("log" + (counter + 1)).setValue(workoutData)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 // Data successfully uploaded
                                 Toast.makeText(getApplicationContext(), "Successfully Saved", Toast.LENGTH_SHORT).show();
+
+                                // Update summary text after a successful upload
+                                int workoutsDoneForToday = countWorkoutsForToday(getCurrentDate());
+                                updateSummaryTextView(workoutsDoneForToday);
+
+                                // Retrieve and update the workout list from Firebase
+                                retrieveWorkoutListFromFirebase();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -210,12 +232,70 @@ public class WorkoutPageActivity extends AppCompatActivity {
 
 
 
+
+
     // Get the current date
     private String getCurrentDate() {
         Date currentDate = Calendar.getInstance().getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         return dateFormat.format(currentDate);
     }
+    private void retrieveWorkoutListFromFirebase() {
+        // Assuming you have a reference to your Firebase Database
+        DatabaseReference workoutRef = FirebaseDatabase.getInstance().getReference("users").child(userName).child("workoutLogs");
+
+        workoutRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Iterate through dataSnapshot to convert it to a list of Workout objects
+                List<Workout> fetchedWorkoutList = new ArrayList<>();
+
+                for (DataSnapshot workoutSnapshot : dataSnapshot.getChildren()) {
+                    Workout workout = workoutSnapshot.getValue(Workout.class);
+                    fetchedWorkoutList.add(workout);
+                }
+
+                // Now you have the fetchedWorkoutList, update your workoutList and RecyclerView
+                workoutList = fetchedWorkoutList;
+                updateRecyclerView(workoutList);
+
+                // Count workouts for today
+                int workoutsDoneForToday = countWorkoutsForToday(getCurrentDate());
+
+                // Update the summary TextView
+                updateSummaryTextView(workoutsDoneForToday);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle the error
+                Toast.makeText(getApplicationContext(), "Failed to retrieve workout data", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateSummaryTextView(int workoutsDoneForToday) {
+        TextView summaryTextView = findViewById(R.id.textViewSummary);
+
+        if (workoutsDoneForToday == 0) {
+            summaryTextView.setText("No workout entered for today");
+        } else {
+            String workoutText = (workoutsDoneForToday > 1) ? "workouts" : "workout";
+            summaryTextView.setText(workoutsDoneForToday + " " + workoutText + " done for today");
+        }
+    }
+
+
+
+
+
+    private void updateRecyclerView(List<Workout> workoutList) {
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewWorkoutHistory);
+        WorkoutHistoryAdapter adapter = new WorkoutHistoryAdapter(workoutList, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+
 
 
 
