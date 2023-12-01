@@ -85,6 +85,15 @@ public class ForumActivity extends AppCompatActivity {
             }
         });
 
+        // Go to find users page
+        ImageButton findUsersButton = findViewById(R.id.toFindUsers);
+        findUsersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ForumActivity.this, FindUsersActivity.class));
+            }
+        });
+
         // Listen to DB for new posts
         postsRef = FirebaseDatabase.getInstance().getReference().child("posts");
         postsRef.addChildEventListener(new ChildEventListener() {
