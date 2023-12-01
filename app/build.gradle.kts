@@ -32,7 +32,6 @@ android {
     }
 }
 
-
 dependencies {
 
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -46,7 +45,15 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("com.scwang.smart:refresh-layout-kernel:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-classics:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-radar:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-falsify:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-material:2.0.3")
+    implementation ("com.scwang.smart:refresh-header-two-level:2.0.3")
+    implementation ("com.scwang.smart:refresh-footer-ball:2.0.3")
+    implementation ("com.scwang.smart:refresh-footer-classics:2.0.3")
     implementation ("com.stone.vega.library:VegaLayoutManager:1.0.6")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
+    implementation("com.github.tlaabs:TimetableView:1.0.3-fx1")
 }

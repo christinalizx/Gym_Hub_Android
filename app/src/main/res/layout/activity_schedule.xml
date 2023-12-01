@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activities.ForumActivity">
+    android:layout_height="match_parent">
 
     <!-- Top Title Section -->
     <TextView
         android:id="@+id/textViewGymName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Gym Hub"
+        android:text="GymName"
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -19,48 +18,29 @@
         android:textColor="@color/white"
         android:background="@color/darkPurple" />
 
-    <!-- Search Bar -->
-    <LinearLayout
-        android:id="@+id/search_home"
+    <androidx.core.widget.NestedScrollView
         android:layout_below="@id/textViewGymName"
+        android:layout_above="@+id/bottomNavigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="@drawable/corners_bg"
-        android:padding="10dp">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="17dp"
-            android:layout_height="17dp"
-            android:src="@drawable/search"
-            android:layout_marginRight="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/search_tv_home"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:cursorVisible="false"
-            android:hint="Search"
-            android:textSize="15sp" />
-
-        <ImageView
-            android:id="@+id/toWriteArticle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/add"
-            android:layout_marginLeft="10dp"/>
-    </LinearLayout>
-
-    <!-- RecycleView for Posts -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/forumPostsRecyclerView"
-        android:layout_below="@id/search_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_above="@id/bottomNavigation"/>
+            <!-- TimetableView -->
+            <com.github.tlaabs.timetableview.TimetableView
+                android:id="@+id/timetable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:header_title="@array/my_header_title"
+                app:start_time="6"
+                app:row_count="17"
+                app:column_count="8"
+                app:sticker_colors="@array/default_sticker_color"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- Bottom Navigation Section -->
     <LinearLayout
@@ -113,7 +93,6 @@
             android:background="@null"
             app:srcCompat="@drawable/ic_inbox"
             android:scaleType="centerInside"
-            tools:visibility="visible"
             android:clickable="true"
             android:contentDescription="TODO" />
     </LinearLayout>

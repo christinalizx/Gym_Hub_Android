@@ -37,6 +37,14 @@ public class WorkoutPageActivity extends AppCompatActivity {
             }
         });
 
+        ImageButton forum = findViewById(R.id.imageButtonForum);
+        forum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(WorkoutPageActivity.this, ForumActivity.class));
+            }
+        });
+
         // Set today's date
         TextView dateTextView = findViewById(R.id.textViewDate);
         Date currentDate = Calendar.getInstance().getTime();
