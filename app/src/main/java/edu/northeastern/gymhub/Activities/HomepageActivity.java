@@ -48,7 +48,7 @@ public class HomepageActivity extends AppCompatActivity {
 
     private String gymName;
     private String curUsername;
-    private AppCompatButton scanInButton;
+    private Button scanInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,12 +151,16 @@ public class HomepageActivity extends AppCompatActivity {
                 if(!status){
                     statusRef.setValue(true);
                     scanInButton.setText("Scan Out");
+                    int color = ContextCompat.getColor(HomepageActivity.this, R.color.lightRed);
+                    scanInButton.setBackgroundColor(color);
                     showToast("You have scanned in.");
 
                 // If scanned out
                 } else{
                     statusRef.setValue(false);
                     scanInButton.setText("Scan In");
+                    int color = ContextCompat.getColor(HomepageActivity.this, R.color.green);
+                    scanInButton.setBackgroundColor(color);
                     showToast("You have scanned out.");
                 }
 
