@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,9 +43,12 @@ public class HomepageActivity extends AppCompatActivity {
     private ScheduleAdapter scheduleAdapter;
     private DatabaseReference schedulesRef;
     private DatabaseReference trafficRef;
+    private DatabaseReference userRef;
     private BarChart barChart;
 
     private String gymName;
+    private String curUsername;
+    private AppCompatButton scanInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,7 @@ public class HomepageActivity extends AppCompatActivity {
         // Inside onCreate() method, after setting the content view
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         gymName = preferences.getString("GymName", "Default Gym Name").toLowerCase();
+        curUsername = preferences.getString("Username", "Default User");
         TextView gymNameTextView = findViewById(R.id.textViewGymName);
         gymNameTextView.setText(gymName);
 
@@ -94,6 +100,18 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
 
+        // Scan in user to gym
+        scanInButton = findViewById(R.id.scanInButton);
+        userRef = FirebaseDatabase.getInstance().getReference("users").child(curUsername);
+        scanInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scanInCurUser();
+            }
+        });
+
+
+
         Button schedule = findViewById(R.id.buttonCheckThisWeek);
         schedule.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +137,41 @@ public class HomepageActivity extends AppCompatActivity {
         barChart = findViewById(R.id.barChart);
         fetchAndDisplayHourlyTraffic();
 
+    }
+
+    private void scanInCurUser() {
+
+        DatabaseReference statusRef = userRef.child("status");
+        statusRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Boolean status = snapshot.getValue(Boolean.class);
+
+                // If not scanned in
+                if(!status){
+                    statusRef.setValue(true);
+                    scanInButton.setText("Scan Out");
+                    showToast("You have scanned in.");
+
+                // If scanned out
+                } else{
+                    statusRef.setValue(false);
+                    scanInButton.setText("Scan In");
+                    showToast("You have scanned out.");
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                showToast("Error scanning in.");
+            }
+        });
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(HomepageActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void fetchAndDisplayTodaySchedule() {

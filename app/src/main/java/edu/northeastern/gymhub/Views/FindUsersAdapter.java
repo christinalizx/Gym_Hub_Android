@@ -80,10 +80,10 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
 
         // Initially, make both buttons invisible and enabled
         holder.buttonFollow.setVisibility(View.GONE);
-        holder.buttonFollow.setEnabled(true);
+        holder.buttonFollow.setEnabled(false);
 
         holder.buttonUnfollow.setVisibility(View.GONE);
-        holder.buttonUnfollow.setEnabled(true);
+        holder.buttonUnfollow.setEnabled(false);
 
         // Check if the current user is in the connections of the displayed user
         String displayedUser = usersList.get(position).getUsername();
