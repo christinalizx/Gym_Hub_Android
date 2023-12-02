@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -12,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,10 +51,46 @@ public class HomepageActivity extends AppCompatActivity {
     private String curUsername;
     private Button scanInButton;
 
+
+    // from video
+    RecyclerView horizontalRV;
+    ArrayList<String> dataSource;
+    LinearLayoutManager linearLayoutManager;
+    HorizontalRVAdapter horizontalRVAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+
+        // Profile pic recycler view
+        horizontalRV = findViewById(R.id.horizontalRecyclerView);
+
+        //Setting the data source
+        dataSource = new ArrayList<>();
+        dataSource.add("Hello");
+        dataSource.add("World");
+        dataSource.add("To");
+        dataSource.add("The");
+        dataSource.add("Code");
+        dataSource.add("City");
+        dataSource.add("******");
+
+        linearLayoutManager = new LinearLayoutManager(HomepageActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        horizontalRVAdapter = new HorizontalRVAdapter(dataSource);
+        horizontalRV.setLayoutManager(linearLayoutManager);
+        horizontalRV.setAdapter(horizontalRVAdapter);
+
+
+
+
+
+
+
+
+
+
 
         // Inside onCreate() method, after setting the content view
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
@@ -109,8 +146,6 @@ public class HomepageActivity extends AppCompatActivity {
                 scanInCurUser();
             }
         });
-
-
 
         Button schedule = findViewById(R.id.buttonCheckThisWeek);
         schedule.setOnClickListener(new View.OnClickListener() {
@@ -320,6 +355,55 @@ public class HomepageActivity extends AppCompatActivity {
 
         // Refresh the chart to update the display
         barChart.invalidate();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    class HorizontalRVAdapter extends RecyclerView.Adapter<HorizontalRVAdapter.MyHolder> {
+        ArrayList<String> data;
+
+        public HorizontalRVAdapter(ArrayList<String> data) {
+            this.data = data;
+        }
+
+        @NonNull
+        @Override
+        public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(HomepageActivity.this).inflate(R.layout.horizontal_rv_item, parent, false);
+            return new MyHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+            holder.tvTitle.setText(data.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return data.size();
+        }
+
+        class MyHolder extends RecyclerView.ViewHolder {
+            TextView tvTitle;
+
+            public MyHolder(@NonNull View itemView) {
+                super(itemView);
+                tvTitle = itemView.findViewById(R.id.tvTitle);
+            }
+        }
+
     }
 
 }

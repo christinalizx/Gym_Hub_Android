@@ -10,11 +10,16 @@ import edu.northeastern.gymhub.R;
 
 public class PersonalInformationDetailsPageActivity extends AppCompatActivity {
 
+    private ImageButton profilePic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_information_details_page);
+
+
+        // Set profile pic
+        profilePic = findViewById(R.id.people_logo);
 
         ImageButton workOutButton = findViewById(R.id.imageButtonWorkout);
         workOutButton.setOnClickListener(new View.OnClickListener() {
