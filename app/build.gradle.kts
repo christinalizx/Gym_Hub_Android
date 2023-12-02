@@ -42,6 +42,7 @@ dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.navigation:navigation-fragment:2.5.3")
     implementation("androidx.navigation:navigation-ui:2.5.3")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -56,6 +57,8 @@ dependencies {
     implementation ("com.stone.vega.library:VegaLayoutManager:1.0.6")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.github.tlaabs:TimetableView:1.0.3-fx1")
+    implementation ("com.github.dhaval2404:imagepicker:2.1")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 
 
 
