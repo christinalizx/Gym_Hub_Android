@@ -35,8 +35,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import edu.northeastern.gymhub.Models.GymUser;
 import edu.northeastern.gymhub.Models.ScheduleItem;
 import edu.northeastern.gymhub.R;
+import edu.northeastern.gymhub.Utils.AndroidUtil;
+import edu.northeastern.gymhub.Utils.FirebaseUtil;
 import edu.northeastern.gymhub.Views.ScheduleAdapter;
 
 public class HomepageActivity extends AppCompatActivity {
@@ -52,11 +55,17 @@ public class HomepageActivity extends AppCompatActivity {
     private Button scanInButton;
 
 
+    // for recycler view
+    private List<String> connections;
+
     // from video
     RecyclerView horizontalRV;
     ArrayList<String> dataSource;
     LinearLayoutManager linearLayoutManager;
     HorizontalRVAdapter horizontalRVAdapter;
+    private FirebaseDatabase database;
+    private DatabaseReference usersRef;
+    private List<String> userConnections;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +77,8 @@ public class HomepageActivity extends AppCompatActivity {
         horizontalRV = findViewById(R.id.horizontalRecyclerView);
 
         //Setting the data source
+        getUserConnections();
+
         dataSource = new ArrayList<>();
         dataSource.add("Hello");
         dataSource.add("World");
@@ -172,6 +183,64 @@ public class HomepageActivity extends AppCompatActivity {
         barChart = findViewById(R.id.barChart);
         fetchAndDisplayHourlyTraffic();
 
+    }
+
+    private void getUserConnections() {
+        FirebaseUtil.usersRef.child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                GymUser curUser = snapshot.getValue(GymUser.class);
+                userConnections = curUser.getConnections();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                AndroidUtil.handleDatabaseError(error);
+            }
+        });
+    }
+
+    private void fetchData() {
+        final ArrayList<String> usernamesList = new ArrayList<>();
+        final ArrayList<String> statusList = new ArrayList<>();
+        final ArrayList<String> nameList = new ArrayList<>();
+
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    // Get username, status, and name from each user
+                    String username = userSnapshot.child("username").getValue(String.class);
+                    String status = userSnapshot.child("status").getValue(String.class);
+                    String name = userSnapshot.child("name").getValue(String.class);
+
+                    // Add data to respective lists
+                    usernamesList.add(username);
+                    statusList.add(status);
+                    nameList.add(name);
+
+
+                    if(userConnections.contains(username)){
+                        for(String connection : userConnections){
+                            int index = usernamesList.indexOf(connection);
+                        }
+                    }
+
+                }
+
+                // Now, you can use usernamesList, statusList, and nameList as needed
+                // They will have corresponding data at the same index
+
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle error
+            }
+        });
     }
 
     private void scanInCurUser() {
