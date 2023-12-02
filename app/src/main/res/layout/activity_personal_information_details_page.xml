@@ -178,7 +178,14 @@
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:background="#EEEEEE"/>
-        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonUpdateProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Update" />
+    </LinearLayout>
 
         <ImageView
             android:layout_width="fill_parent"
