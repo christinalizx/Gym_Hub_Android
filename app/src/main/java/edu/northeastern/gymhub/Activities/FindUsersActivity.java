@@ -147,6 +147,7 @@ public class FindUsersActivity extends AppCompatActivity {
                                 .addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
                                         // Notify the adapter that the data set has changed
+                                        adapter.updateConnections(curUser.getConnections());
                                         showToast("You are no longer following " + connection.getName() + ".");
                                     } else {
                                         showToast("Failed to unfollow");
@@ -184,6 +185,7 @@ public class FindUsersActivity extends AppCompatActivity {
                                 .addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
                                         // Notify the adapter that the data set has changed
+                                        adapter.updateConnections(curUser.getConnections());
                                         showToast("You are now following " + connection.getName() + ".");
                                     } else {
                                         showToast("Connection failed");

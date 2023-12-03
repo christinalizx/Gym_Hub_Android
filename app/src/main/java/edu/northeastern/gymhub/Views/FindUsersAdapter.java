@@ -47,12 +47,6 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION && listener != null) {
-                        /**
-                        buttonFollow.setVisibility(View.GONE);
-                        buttonFollow.setEnabled(false);
-                        buttonUnfollow.setVisibility(View.VISIBLE);
-                        buttonUnfollow.setEnabled(true);
-                         */
                         listener.onFollowButtonClick(v, position);
                     }
                 }
@@ -64,12 +58,6 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION && listener != null) {
-                        /**
-                        buttonUnfollow.setVisibility(View.GONE);
-                        buttonUnfollow.setEnabled(false);
-                        buttonFollow.setVisibility(View.VISIBLE);
-                        buttonFollow.setEnabled(true);
-                         */
                         listener.onUnfollowButtonClick(v, position);
                     }
                 }
@@ -110,6 +98,10 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
         }
     }
 
+    public void updateConnections(List<String> newConnections) {
+        this.connections = newConnections;
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {
