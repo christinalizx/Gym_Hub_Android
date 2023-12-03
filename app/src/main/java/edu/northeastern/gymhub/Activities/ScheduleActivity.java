@@ -1,14 +1,17 @@
 package edu.northeastern.gymhub.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.tlaabs.timetableview.Schedule;
@@ -25,12 +28,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import edu.northeastern.gymhub.R;
 
 public class ScheduleActivity extends AppCompatActivity {
     private String gymName;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         gymName = preferences.getString("GymName", "Default Gym Name").toLowerCase();
+        username = preferences.getString("Username", "Default User");
         TextView gymNameTextView = findViewById(R.id.textViewGymName);
         gymNameTextView.setText(gymName);
 
@@ -54,45 +61,96 @@ public class ScheduleActivity extends AppCompatActivity {
 
         fetchScheduleDataForThisWeek(new FirebaseCallback() {
             @Override
-            public void onCallback(ArrayList<ArrayList<Schedule>> schedules) {
-                // Flatten the list of lists into a single list
-                ArrayList<Schedule> flattenedSchedules = new ArrayList<>();
-                for (ArrayList<Schedule> daySchedules : schedules) {
-                    timetable.add(daySchedules);
-                }
+            public void onCallback(ArrayList<Schedule> schedules) {
+                timetable.add(schedules);
             }
         });
 
 
-        // Set the OnStickerSelectedListener for handling schedule selection
         timetable.setOnStickerSelectEventListener(new TimetableView.OnStickerSelectedListener() {
             @Override
             public void OnStickerSelected(int idx, ArrayList<Schedule> schedules) {
-                // Handle the selected sticker (schedule)
-                Schedule selectedSchedule = schedules.get(idx);
+                    // Handle the selected sticker (schedule)
+                    Schedule selectedSchedule = schedules.get(0);
 
-                // Extract information from the selected schedule
-                String className = selectedSchedule.getClassTitle();
-                String startTime = selectedSchedule.getStartTime().toString();
-                String endTime = selectedSchedule.getEndTime().toString();
+                    // Extract information from the selected schedule
+                    String className = selectedSchedule.getClassTitle();
+                    Time startTime = selectedSchedule.getStartTime();
+                    Time endTime = selectedSchedule.getEndTime();
+                    int selectedDayOfWeek = selectedSchedule.getDay()+2;
+                    String nextOccurrenceDate = getNextOccurrenceDate(selectedDayOfWeek);
 
-                // Example: Show a toast with the information
-                String toastMessage = "Class: " + className +
-                        "\nTime: " + startTime + " - " + endTime;
-
-                Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_SHORT).show();
+                // Show an AlertDialog to confirm registration
+                    new AlertDialog.Builder(ScheduleActivity.this)
+                            .setTitle("Register Course")
+                            .setMessage("Do you want to register for the course?\nClass: " + className
+                                    + "\nTime: " + getTimeString(startTime) + " - " + getTimeString(endTime)
+                            + "\nDate: " + nextOccurrenceDate)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // User clicked "Yes", upload data to Firebase
+                                    registerCourse(className, startTime, endTime, nextOccurrenceDate);
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // User clicked "No" or cancelled, do nothing
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
             }
         });
     }
+    private String getNextOccurrenceDate(int selectedDayOfWeek) {
+        Calendar calendar = Calendar.getInstance();
+        int currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        int daysUntilNextOccurrence = (selectedDayOfWeek - currentDayOfWeek + 7) % 7;
+
+        // If today is the selected day, add 7 days to get the next occurrence
+        if (daysUntilNextOccurrence <= 0) {
+            daysUntilNextOccurrence += 7;
+        }
+
+        calendar.add(Calendar.DAY_OF_YEAR, daysUntilNextOccurrence);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return sdf.format(calendar.getTime());
+    }
+
+    private String getTimeString(Time time) {
+        return String.format(Locale.getDefault(), "%02d:%02d", time.getHour(), time.getMinute());
+    }
+
+    private void registerCourse(String className, Time startTime, Time endTime, String date) {
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(username).child("classScheduled");
+
+            // Create a unique key for the registration entry
+            String registrationKey = userRef.push().getKey();
+
+            // Create a map with the data to be uploaded
+            Map<String, Object> registrationData = new HashMap<>();
+            registrationData.put("className", className);
+            registrationData.put("startTime", startTime);
+            registrationData.put("endTime", endTime);
+            registrationData.put("date", date);
+
+            // Upload the data
+            userRef.child(registrationKey).setValue(registrationData);
+
+            // Inform the user that the course has been registered (you can use a Toast or another UI element)
+            Toast.makeText(getApplicationContext(), "Course registered!", Toast.LENGTH_SHORT).show();
+        }
+
 
     private void fetchScheduleDataForThisWeek(FirebaseCallback callback) {
         DatabaseReference schedulesRef = FirebaseDatabase.getInstance().getReference("schedules").child(gymName);
 
+
         schedulesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<ArrayList<Schedule>> allSchedules = new ArrayList<>();
-
                 // Get the current day
                 String currentDay = getCurrentDay();
                 int currentDayValue = mapFirebaseDay(currentDay); // Get the current day of the week
@@ -107,7 +165,6 @@ public class ScheduleActivity extends AppCompatActivity {
 
                     // Check if the day is within the current week
                     if (Math.abs(dayDifference) < 7) {
-                        ArrayList<Schedule> daySchedules = new ArrayList<>();
                         for (DataSnapshot timeSnapshot : daySnapshot.getChildren()) {
                             for (DataSnapshot classSnapshot : timeSnapshot.getChildren()) {
                                 String className = classSnapshot.child("name").getValue(String.class);
@@ -118,6 +175,7 @@ public class ScheduleActivity extends AppCompatActivity {
                                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
                                 Date startTimeDate;
                                 try {
+                                    ArrayList<Schedule> allSchedules = new ArrayList<>();
                                     startTimeDate = sdf.parse(startTimeStr);
                                     Calendar startTimeCalendar = Calendar.getInstance();
                                     startTimeCalendar.setTime(startTimeDate);
@@ -152,24 +210,19 @@ public class ScheduleActivity extends AppCompatActivity {
                                     schedule.setClassTitle(className);
                                     schedule.setStartTime(startTime);
                                     schedule.setEndTime(endTime);
-
-                                    // Set the day of the week
                                     schedule.setDay(firebaseDay);
 
-                                    // Add schedule to the day's list
-                                    daySchedules.add(schedule);
+                                    // Add schedule to the list
+                                    allSchedules.add(schedule);
+                                    callback.onCallback(allSchedules);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
                             }
                         }
-                        // Add the day's list to the overall list
-                        allSchedules.add(daySchedules);
                     }
                 }
 
-                // Callback with the list of schedules for this week
-                callback.onCallback(allSchedules);
             }
 
             @Override
@@ -178,9 +231,10 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         });
     }
+
     // Callback interface for Firebase asynchronous data fetching
     private interface FirebaseCallback {
-        void onCallback(ArrayList<ArrayList<Schedule>> schedules);
+        void onCallback(ArrayList<Schedule> schedules);
     }
 
     private String getCurrentDay() {
