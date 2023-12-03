@@ -36,6 +36,8 @@ public class FindUsersActivity extends AppCompatActivity {
     private String curUsername;
     private GymUser curUser;
     private ImageButton imageButtonBackArrow;
+    private FindUsersAdapter adapter;
+    private ValueEventListener valueEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +61,7 @@ public class FindUsersActivity extends AppCompatActivity {
         imageButtonBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FindUsersActivity.this, ForumActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -69,8 +70,7 @@ public class FindUsersActivity extends AppCompatActivity {
         forum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FindUsersActivity.this, ForumActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(FindUsersActivity.this, ForumActivity.class));
             }
         });
 
@@ -79,14 +79,11 @@ public class FindUsersActivity extends AppCompatActivity {
         workout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create an Intent to start the Workout activity
-                Intent intent = new Intent(FindUsersActivity.this, WorkoutPageActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(FindUsersActivity.this, WorkoutPageActivity.class));
             }
         });
 
 
-        setUserInfo();
         usersRef.child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -94,7 +91,6 @@ public class FindUsersActivity extends AppCompatActivity {
                 GymUser curUser = snapshot.getValue(GymUser.class);
                 List<String> connections = curUser.getConnections();
                 setAdapter(connections);
-
             }
 
             @Override
@@ -102,11 +98,12 @@ public class FindUsersActivity extends AppCompatActivity {
                 handleDatabaseError(error);
             }
         });
+        setUserInfo();
     }
 
     private void setAdapter(List<String> connections) {
         setOnClickListener();
-        FindUsersAdapter adapter = new FindUsersAdapter(this, usersList, listener, connections);
+        adapter = new FindUsersAdapter(this, usersList, listener, connections);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -120,13 +117,14 @@ public class FindUsersActivity extends AppCompatActivity {
             public void onFollowButtonClick(View v, int position) {
                 GymUser clickedUser = usersList.get(position);
                 addNewConnection(clickedUser);
-
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onUnfollowButtonClick(View v, int position) {
                 GymUser clickedUser = usersList.get(position);
                 removeConnection(clickedUser);
+                adapter.notifyDataSetChanged();
             }
         };
     }
@@ -149,7 +147,7 @@ public class FindUsersActivity extends AppCompatActivity {
                                 .addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
                                         // Notify the adapter that the data set has changed
-                                        recyclerView.getAdapter().notifyDataSetChanged();
+                                        adapter.updateConnections(curUser.getConnections());
                                         showToast("You are no longer following " + connection.getName() + ".");
                                     } else {
                                         showToast("Failed to unfollow");
@@ -187,7 +185,7 @@ public class FindUsersActivity extends AppCompatActivity {
                                 .addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
                                         // Notify the adapter that the data set has changed
-                                        recyclerView.getAdapter().notifyDataSetChanged();
+                                        adapter.updateConnections(curUser.getConnections());
                                         showToast("You are now following " + connection.getName() + ".");
                                     } else {
                                         showToast("Connection failed");
@@ -213,7 +211,7 @@ public class FindUsersActivity extends AppCompatActivity {
     private void setUserInfo() {
     // Add a ValueEventListener to retrieve data from the "users" node
 
-        usersRef.addValueEventListener(new ValueEventListener() {
+        valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Clear the existing usersList to avoid duplicates
@@ -231,7 +229,7 @@ public class FindUsersActivity extends AppCompatActivity {
                 }
 
                 // Notify the adapter that the data set has changed
-                recyclerView.getAdapter().notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -239,7 +237,9 @@ public class FindUsersActivity extends AppCompatActivity {
                 // Handle database error
                 handleDatabaseError(databaseError);
             }
-        });
+        };
+
+        usersRef.addValueEventListener(valueEventListener);
     }
 
     private void handleDatabaseError(DatabaseError databaseError) {
@@ -248,5 +248,14 @@ public class FindUsersActivity extends AppCompatActivity {
 
     private void showToast(String message) {
         Toast.makeText(FindUsersActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Remove the ValueEventListener to prevent memory leaks
+        if (usersRef != null) {
+            usersRef.removeEventListener(valueEventListener);
+        }
     }
 }

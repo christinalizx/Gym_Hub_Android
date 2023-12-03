@@ -78,13 +78,6 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
         String name = usersList.get(position).getName();
         holder.userName.setText(name);
 
-        // Initially, make both buttons invisible and enabled
-        holder.buttonFollow.setVisibility(View.GONE);
-        holder.buttonFollow.setEnabled(false);
-
-        holder.buttonUnfollow.setVisibility(View.GONE);
-        holder.buttonUnfollow.setEnabled(false);
-
         // Check if the current user is in the connections of the displayed user
         String displayedUser = usersList.get(position).getUsername();
         boolean isFollowing = connections.contains(displayedUser);
@@ -105,6 +98,10 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
         }
     }
 
+    public void updateConnections(List<String> newConnections) {
+        this.connections = newConnections;
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {
