@@ -51,20 +51,13 @@ public class HomepageActivity extends AppCompatActivity {
     private ScheduleAdapter scheduleAdapter;
     private DatabaseReference schedulesRef;
     private DatabaseReference trafficRef;
-    private DatabaseReference userRef;
     private BarChart barChart;
-
     private String gymName;
     private String curUsername;
     private Button scanInButton;
-
-
-    // for recycler view
-
-    // from video
-    RecyclerView horizontalRV;
-    LinearLayoutManager linearLayoutManager;
-    HorizontalRVAdapter horizontalRVAdapter;
+    private RecyclerView horizontalRV;
+    private LinearLayoutManager linearLayoutManager;
+    private HorizontalRVAdapter horizontalRVAdapter;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
 
@@ -276,17 +269,6 @@ public class HomepageActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-
-
-
-
-
-
-
-
     private void fetchAndDisplayTodaySchedule() {
         // Get the current day
         String currentDay = getCurrentDay();
@@ -430,13 +412,7 @@ public class HomepageActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
+    /** Adapter for horizontal recycler view **/
     class HorizontalRVAdapter extends RecyclerView.Adapter<HorizontalRVAdapter.MyHolder> {
         ArrayList<String> names;
         ArrayList<String> usernames;

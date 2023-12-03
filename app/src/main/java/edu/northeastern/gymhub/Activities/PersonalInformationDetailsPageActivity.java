@@ -45,7 +45,6 @@ public class PersonalInformationDetailsPageActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         curUsername = preferences.getString("Username", "Default User");
         
-        
         // Set profile pic
         imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -82,16 +81,6 @@ public class PersonalInformationDetailsPageActivity extends AppCompatActivity {
                 updateProfile();
             }
         });
-
-
-
-
-
-
-
-
-
-
 
 
         ImageButton workOutButton = findViewById(R.id.imageButtonWorkout);
@@ -146,9 +135,6 @@ public class PersonalInformationDetailsPageActivity extends AppCompatActivity {
     private void showToast(String message) {
         Toast.makeText(PersonalInformationDetailsPageActivity.this, message, Toast.LENGTH_SHORT).show();
     }
-
-
-
 
     @Override
     public void finish() {
