@@ -1,8 +1,11 @@
 package edu.northeastern.gymhub.Activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,24 +16,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.lang.reflect.Array;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,7 +53,6 @@ import edu.northeastern.gymhub.Models.GymUser;
 import edu.northeastern.gymhub.Models.ScheduleItem;
 import edu.northeastern.gymhub.R;
 import edu.northeastern.gymhub.Utils.AndroidUtil;
-import edu.northeastern.gymhub.Utils.FirebaseUtil;
 import edu.northeastern.gymhub.Views.ScheduleAdapter;
 
 public class HomepageActivity extends AppCompatActivity {
@@ -70,6 +81,7 @@ public class HomepageActivity extends AppCompatActivity {
     private String getUsername;
     private List<String> userConnections;
 
+    Uri selectedImageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -228,8 +240,8 @@ public class HomepageActivity extends AppCompatActivity {
 
 
         final ArrayList<String> usernamesList = new ArrayList<>();
-        final ArrayList<String> statusList = new ArrayList<>();
         final ArrayList<String> nameList = new ArrayList<>();
+        final ArrayList<String> imageUris = new ArrayList<>();
 
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -249,16 +261,24 @@ public class HomepageActivity extends AppCompatActivity {
                         // Add data to respective lists
                         usernamesList.add(username);
                         nameList.add(name);
+
+                        StorageReference picRef = FirebaseStorage.getInstance().getReference().child("profile_pics").child(username);
+                        picRef.getDownloadUrl().addOnCompleteListener(task -> {
+                            if(task.isSuccessful()){
+                                Uri uri = task.getResult();
+                                imageUris.add(uri.toString());
+                            } else {
+                                String defaultUri = "https://firebasestorage.googleapis.com/v0/b/gymhub-7a220.appspot.com/o/profile_pics%2Fhead_img.jpeg?alt=media&token=16842243-c72c-490e-8f0c-52bc9a7d1024";
+                                imageUris.add(defaultUri);
+                            }
+                        });
+
+
                     }
                 }
 
-                setHorizontalRV(usernamesList, nameList);
+                setHorizontalRV(usernamesList, nameList, imageUris);
 
-               // setHorizontalRV(usernamesList, nameList);
-
-
-                // Now, you can use usernamesList, statusList, and nameList as needed
-                // They will have corresponding data at the same index
             }
 
             @Override
@@ -268,12 +288,14 @@ public class HomepageActivity extends AppCompatActivity {
         });
     }
 
-    private void setHorizontalRV(ArrayList<String> usernamesList, ArrayList<String> nameList) {
+    private void setHorizontalRV(ArrayList<String> usernamesList, ArrayList<String> nameList, ArrayList<String> imageUris) {
         linearLayoutManager = new LinearLayoutManager(HomepageActivity.this, LinearLayoutManager.HORIZONTAL, false);
-        horizontalRVAdapter = new HorizontalRVAdapter(usernamesList, nameList);
+        horizontalRVAdapter = new HorizontalRVAdapter(HomepageActivity.this, usernamesList, nameList, imageUris);
         horizontalRV.setLayoutManager(linearLayoutManager);
         horizontalRV.setAdapter(horizontalRVAdapter);
     }
+
+
 
     private void scanInCurUser() {
 
@@ -475,17 +497,14 @@ public class HomepageActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
     class HorizontalRVAdapter extends RecyclerView.Adapter<HorizontalRVAdapter.MyHolder> {
         ArrayList<String> names;
         ArrayList<String> usernames;
+        ArrayList<String> imageUris;
+        Context context;
 
-        public HorizontalRVAdapter(ArrayList<String> usernames, ArrayList<String> names ) {
+        public HorizontalRVAdapter(Context context, ArrayList<String> usernames, ArrayList<String> names, ArrayList imageUris ) {
+            this.context = context;
             this.names = names;
             this.usernames = usernames;
         }
@@ -500,6 +519,16 @@ public class HomepageActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull MyHolder holder, int position) {
             holder.tvTitle.setText(names.get(position));
+
+            showToast(usernames.get(position));
+            FirebaseStorage.getInstance().getReference().child("profile_pics")
+                    .child(usernames.get(position)).getDownloadUrl()
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            Uri uri = task.getResult();
+                            AndroidUtil.setProfilePic(context, uri, holder.profilePic);
+                        }
+                    });
         }
 
         @Override
