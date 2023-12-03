@@ -47,6 +47,12 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION && listener != null) {
+                        /**
+                        buttonFollow.setVisibility(View.GONE);
+                        buttonFollow.setEnabled(false);
+                        buttonUnfollow.setVisibility(View.VISIBLE);
+                        buttonUnfollow.setEnabled(true);
+                         */
                         listener.onFollowButtonClick(v, position);
                     }
                 }
@@ -58,6 +64,12 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION && listener != null) {
+                        /**
+                        buttonUnfollow.setVisibility(View.GONE);
+                        buttonUnfollow.setEnabled(false);
+                        buttonFollow.setVisibility(View.VISIBLE);
+                        buttonFollow.setEnabled(true);
+                         */
                         listener.onUnfollowButtonClick(v, position);
                     }
                 }
@@ -77,13 +89,6 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
     public void onBindViewHolder(@NonNull FindUsersAdapter.MyViewHolder holder, int position) {
         String name = usersList.get(position).getName();
         holder.userName.setText(name);
-
-        // Initially, make both buttons invisible and enabled
-        holder.buttonFollow.setVisibility(View.GONE);
-        holder.buttonFollow.setEnabled(true);
-
-        holder.buttonUnfollow.setVisibility(View.GONE);
-        holder.buttonUnfollow.setEnabled(true);
 
         // Check if the current user is in the connections of the displayed user
         String displayedUser = usersList.get(position).getUsername();
