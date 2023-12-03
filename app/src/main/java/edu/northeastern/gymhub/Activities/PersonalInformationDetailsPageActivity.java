@@ -24,6 +24,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import edu.northeastern.gymhub.R;
+import edu.northeastern.gymhub.Utils.CircleImageView;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 

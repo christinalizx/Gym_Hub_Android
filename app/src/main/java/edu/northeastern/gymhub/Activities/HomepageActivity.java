@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,6 +67,7 @@ public class HomepageActivity extends AppCompatActivity {
     HorizontalRVAdapter horizontalRVAdapter;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
+    private String getUsername;
     private List<String> userConnections;
 
     @Override
@@ -72,12 +75,29 @@ public class HomepageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+        // Inside onCreate() method, after setting the content view
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        gymName = preferences.getString("GymName", "Default Gym Name").toLowerCase();
+        curUsername = preferences.getString("Username", "Default User");
+        TextView gymNameTextView = findViewById(R.id.textViewGymName);
+        gymNameTextView.setText(gymName);
+
+
+
+
+
+
+
+        // connect database
+        database = FirebaseDatabase.getInstance();
+        usersRef = database.getReference().child("users");
 
         // Profile pic recycler view
         horizontalRV = findViewById(R.id.horizontalRecyclerView);
 
         //Setting the data source
-        getUserConnections();
+        //getUserConnections();
+        fetchData();
 
         dataSource = new ArrayList<>();
         dataSource.add("Hello");
@@ -87,11 +107,7 @@ public class HomepageActivity extends AppCompatActivity {
         dataSource.add("Code");
         dataSource.add("City");
         dataSource.add("******");
-
-        linearLayoutManager = new LinearLayoutManager(HomepageActivity.this, LinearLayoutManager.HORIZONTAL, false);
-        horizontalRVAdapter = new HorizontalRVAdapter(dataSource);
-        horizontalRV.setLayoutManager(linearLayoutManager);
-        horizontalRV.setAdapter(horizontalRVAdapter);
+        //setHorizontalRV(dataSource, dataSource);
 
 
 
@@ -103,12 +119,9 @@ public class HomepageActivity extends AppCompatActivity {
 
 
 
-        // Inside onCreate() method, after setting the content view
-        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        gymName = preferences.getString("GymName", "Default Gym Name").toLowerCase();
-        curUsername = preferences.getString("Username", "Default User");
-        TextView gymNameTextView = findViewById(R.id.textViewGymName);
-        gymNameTextView.setText(gymName);
+
+
+
 
         // Settings page
         ImageButton settingsButton = findViewById(R.id.imageButtonSettings);
@@ -186,7 +199,7 @@ public class HomepageActivity extends AppCompatActivity {
     }
 
     private void getUserConnections() {
-        FirebaseUtil.usersRef.child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference("users").child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 GymUser curUser = snapshot.getValue(GymUser.class);
@@ -201,6 +214,28 @@ public class HomepageActivity extends AppCompatActivity {
     }
 
     private void fetchData() {
+        final ArrayList<String> userConnections = new ArrayList<>();
+
+        database.getReference("users").child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                GymUser curUser = snapshot.getValue(GymUser.class);
+                List<String> connections = curUser.getConnections();
+
+                for(String connection : connections){
+                    if(!connection.equals("") || !connection.isEmpty()){
+                        userConnections.add(connection);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                AndroidUtil.handleDatabaseError(error);
+            }
+        });
+
+
         final ArrayList<String> usernamesList = new ArrayList<>();
         final ArrayList<String> statusList = new ArrayList<>();
         final ArrayList<String> nameList = new ArrayList<>();
@@ -211,36 +246,37 @@ public class HomepageActivity extends AppCompatActivity {
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     // Get username, status, and name from each user
                     String username = userSnapshot.child("username").getValue(String.class);
-                    String status = userSnapshot.child("status").getValue(String.class);
+                    Boolean status = userSnapshot.child("status").getValue(Boolean.class);
                     String name = userSnapshot.child("name").getValue(String.class);
 
-                    // Add data to respective lists
-                    usernamesList.add(username);
-                    statusList.add(status);
-                    nameList.add(name);
-
-
-                    if(userConnections.contains(username)){
-                        for(String connection : userConnections){
-                            int index = usernamesList.indexOf(connection);
-                        }
+                    // Check if the user's status is "true"
+                    if (status && userConnections.contains(username)) {
+                        // Add data to respective lists
+                        usernamesList.add(username);
+                        //statusList.add(status);
+                        nameList.add(name);
                     }
-
                 }
+
+                //setHorizontalRV(usernamesList, nameList);
+
 
                 // Now, you can use usernamesList, statusList, and nameList as needed
                 // They will have corresponding data at the same index
-
-
-
-
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Handle error
+                AndroidUtil.handleDatabaseError(databaseError);
             }
         });
+    }
+
+    private void setHorizontalRV(ArrayList<String> usernamesList, ArrayList<String> nameList) {
+        linearLayoutManager = new LinearLayoutManager(HomepageActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        horizontalRVAdapter = new HorizontalRVAdapter(usernamesList, nameList);
+        horizontalRV.setLayoutManager(linearLayoutManager);
+        horizontalRV.setAdapter(horizontalRVAdapter);
     }
 
     private void scanInCurUser() {
@@ -441,10 +477,12 @@ public class HomepageActivity extends AppCompatActivity {
 
 
     class HorizontalRVAdapter extends RecyclerView.Adapter<HorizontalRVAdapter.MyHolder> {
-        ArrayList<String> data;
+        ArrayList<String> names;
+        ArrayList<String> usernames;
 
-        public HorizontalRVAdapter(ArrayList<String> data) {
-            this.data = data;
+        public HorizontalRVAdapter(ArrayList<String> usernames, ArrayList<String> names ) {
+            this.names = names;
+            this.usernames = usernames;
         }
 
         @NonNull
@@ -456,20 +494,22 @@ public class HomepageActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull MyHolder holder, int position) {
-            holder.tvTitle.setText(data.get(position));
+            holder.tvTitle.setText(names.get(position));
         }
 
         @Override
         public int getItemCount() {
-            return data.size();
+            return names.size();
         }
 
         class MyHolder extends RecyclerView.ViewHolder {
             TextView tvTitle;
+            ImageView profilePic;
 
             public MyHolder(@NonNull View itemView) {
                 super(itemView);
                 tvTitle = itemView.findViewById(R.id.tvTitle);
+                profilePic = itemView.findViewById(R.id.horizontalRvPic);
             }
         }
 

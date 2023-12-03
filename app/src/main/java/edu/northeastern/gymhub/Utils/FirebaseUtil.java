@@ -7,4 +7,5 @@ public class FirebaseUtil {
 
     public static FirebaseDatabase database = FirebaseDatabase.getInstance();
     public static DatabaseReference usersRef = database.getReference("users");
+
 }
