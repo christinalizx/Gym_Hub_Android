@@ -99,15 +99,6 @@ public class HomepageActivity extends AppCompatActivity {
         //getUserConnections();
         fetchData();
 
-        dataSource = new ArrayList<>();
-        dataSource.add("Hello");
-        dataSource.add("World");
-        dataSource.add("To");
-        dataSource.add("The");
-        dataSource.add("Code");
-        dataSource.add("City");
-        dataSource.add("******");
-        //setHorizontalRV(dataSource, dataSource);
 
 
 
@@ -245,20 +236,25 @@ public class HomepageActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     // Get username, status, and name from each user
-                    String username = userSnapshot.child("username").getValue(String.class);
-                    Boolean status = userSnapshot.child("status").getValue(Boolean.class);
-                    String name = userSnapshot.child("name").getValue(String.class);
+                    GymUser user = userSnapshot.getValue(GymUser.class);
 
-                    // Check if the user's status is "true"
+
+                    String username = user.getUsername();
+                    Boolean status = user.getStatus();
+                    String name = user.getName();
+
+
+                    // Check if the user is at gym and is a connection
                     if (status && userConnections.contains(username)) {
                         // Add data to respective lists
                         usernamesList.add(username);
-                        //statusList.add(status);
                         nameList.add(name);
                     }
                 }
 
-                //setHorizontalRV(usernamesList, nameList);
+                setHorizontalRV(usernamesList, nameList);
+
+               // setHorizontalRV(usernamesList, nameList);
 
 
                 // Now, you can use usernamesList, statusList, and nameList as needed
@@ -318,6 +314,17 @@ public class HomepageActivity extends AppCompatActivity {
         Toast.makeText(HomepageActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
+
+
+
+
+
+
+
+
+
+
+
     private void fetchAndDisplayTodaySchedule() {
         // Get the current day
         String currentDay = getCurrentDay();
@@ -371,7 +378,6 @@ public class HomepageActivity extends AppCompatActivity {
 
 
     }
-
 
     private String getCurrentDay() {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE", Locale.getDefault());
@@ -439,7 +445,6 @@ public class HomepageActivity extends AppCompatActivity {
             return Color.rgb(144, 238, 144); // Light Green
         }
     }
-
 
     private void setupBarChart(List<Integer> hours, List<Integer> trafficValues, List<Integer> colors) {
         List<BarEntry> entries = new ArrayList<>();
