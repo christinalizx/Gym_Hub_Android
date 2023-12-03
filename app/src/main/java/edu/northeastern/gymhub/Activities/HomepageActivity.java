@@ -1,6 +1,5 @@
 package edu.northeastern.gymhub.Activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,23 +15,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,8 +34,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.lang.reflect.Array;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,7 +68,6 @@ public class HomepageActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
 
-    Uri selectedImageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,37 +80,13 @@ public class HomepageActivity extends AppCompatActivity {
         TextView gymNameTextView = findViewById(R.id.textViewGymName);
         gymNameTextView.setText(gymName);
 
-
-
-
-
-
-
         // connect database
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference().child("users");
 
         // Profile pic recycler view
         horizontalRV = findViewById(R.id.horizontalRecyclerView);
-
-        //Setting the data source
-        //getUserConnections();
-        fetchData();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        fetchHorizontalRvData();
 
         // Settings page
         ImageButton settingsButton = findViewById(R.id.imageButtonSettings);
@@ -162,7 +128,6 @@ public class HomepageActivity extends AppCompatActivity {
 
         // Scan in user to gym
         scanInButton = findViewById(R.id.scanInButton);
-        userRef = FirebaseDatabase.getInstance().getReference("users").child(curUsername);
         scanInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,6 +135,7 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
 
+        // Schedule
         Button schedule = findViewById(R.id.buttonCheckThisWeek);
         schedule.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,7 +154,6 @@ public class HomepageActivity extends AppCompatActivity {
         scheduleAdapter = new ScheduleAdapter();
         recyclerView.setAdapter(scheduleAdapter);
 
-
         // Fetch and display today's schedule
         fetchAndDisplayTodaySchedule();
 
@@ -197,9 +162,10 @@ public class HomepageActivity extends AppCompatActivity {
 
     }
 
-    private void fetchData() {
+    private void fetchHorizontalRvData() {
         final ArrayList<String> userConnections = new ArrayList<>();
 
+        // Get list of connections to user
         database.getReference("users").child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -219,7 +185,7 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
 
-
+        // Fetch all users
         final ArrayList<String> usernamesList = new ArrayList<>();
         final ArrayList<String> nameList = new ArrayList<>();
         final ArrayList<String> imageUris = new ArrayList<>();
@@ -231,11 +197,9 @@ public class HomepageActivity extends AppCompatActivity {
                     // Get username, status, and name from each user
                     GymUser user = userSnapshot.getValue(GymUser.class);
 
-
                     String username = user.getUsername();
                     Boolean status = user.getStatus();
                     String name = user.getName();
-
 
                     // Check if the user is at gym and is a connection
                     if (status && userConnections.contains(username)) {
@@ -258,6 +222,7 @@ public class HomepageActivity extends AppCompatActivity {
                     }
                 }
 
+                // Set recycler view
                 setHorizontalRV(usernamesList, nameList, imageUris);
 
             }
@@ -276,11 +241,9 @@ public class HomepageActivity extends AppCompatActivity {
         horizontalRV.setAdapter(horizontalRVAdapter);
     }
 
-
-
     private void scanInCurUser() {
 
-        DatabaseReference statusRef = userRef.child("status");
+        DatabaseReference statusRef = usersRef.child(curUsername).child("status");
         statusRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
