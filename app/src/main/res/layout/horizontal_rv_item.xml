@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="150dp"
-    android:layout_height="150dp"
-    android:layout_margin="2dp"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_margin="1dp"
     app:cardCornerRadius="15dp"
     app:cardUseCompatPadding="true">
 
@@ -25,11 +25,11 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:background="#595959"
+            android:background="#7e7e7e"
             android:gravity="center"
             android:text="Text Is This"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="10sp"
             android:textStyle="bold" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

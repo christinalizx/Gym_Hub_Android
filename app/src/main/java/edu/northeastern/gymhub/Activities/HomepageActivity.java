@@ -69,17 +69,13 @@ public class HomepageActivity extends AppCompatActivity {
 
 
     // for recycler view
-    private List<String> connections;
 
     // from video
     RecyclerView horizontalRV;
-    ArrayList<String> dataSource;
     LinearLayoutManager linearLayoutManager;
     HorizontalRVAdapter horizontalRVAdapter;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
-    private String getUsername;
-    private List<String> userConnections;
 
     Uri selectedImageUri;
     @Override
@@ -201,21 +197,6 @@ public class HomepageActivity extends AppCompatActivity {
 
     }
 
-    private void getUserConnections() {
-        database.getReference("users").child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                GymUser curUser = snapshot.getValue(GymUser.class);
-                userConnections = curUser.getConnections();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                AndroidUtil.handleDatabaseError(error);
-            }
-        });
-    }
-
     private void fetchData() {
         final ArrayList<String> userConnections = new ArrayList<>();
 
@@ -290,7 +271,7 @@ public class HomepageActivity extends AppCompatActivity {
 
     private void setHorizontalRV(ArrayList<String> usernamesList, ArrayList<String> nameList, ArrayList<String> imageUris) {
         linearLayoutManager = new LinearLayoutManager(HomepageActivity.this, LinearLayoutManager.HORIZONTAL, false);
-        horizontalRVAdapter = new HorizontalRVAdapter(HomepageActivity.this, usernamesList, nameList, imageUris);
+        horizontalRVAdapter = new HorizontalRVAdapter(HomepageActivity.this, usernamesList, nameList);
         horizontalRV.setLayoutManager(linearLayoutManager);
         horizontalRV.setAdapter(horizontalRVAdapter);
     }
@@ -311,7 +292,7 @@ public class HomepageActivity extends AppCompatActivity {
                     scanInButton.setText("Scan Out");
                     int color = ContextCompat.getColor(HomepageActivity.this, R.color.lightRed);
                     scanInButton.setBackgroundColor(color);
-                    showToast("You have scanned in.");
+                    AndroidUtil.showToast(HomepageActivity.this, "You have scanned in.");
 
                 // If scanned out
                 } else{
@@ -319,7 +300,7 @@ public class HomepageActivity extends AppCompatActivity {
                     scanInButton.setText("Scan In");
                     int color = ContextCompat.getColor(HomepageActivity.this, R.color.green);
                     scanInButton.setBackgroundColor(color);
-                    showToast("You have scanned out.");
+                    AndroidUtil.showToast(HomepageActivity.this, "You have scanned out.");
                 }
 
 
@@ -327,13 +308,9 @@ public class HomepageActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                showToast("Error scanning in.");
+                AndroidUtil.showToast(HomepageActivity.this, "Error scanning in.");
             }
         });
-    }
-
-    private void showToast(String message) {
-        Toast.makeText(HomepageActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -500,10 +477,9 @@ public class HomepageActivity extends AppCompatActivity {
     class HorizontalRVAdapter extends RecyclerView.Adapter<HorizontalRVAdapter.MyHolder> {
         ArrayList<String> names;
         ArrayList<String> usernames;
-        ArrayList<String> imageUris;
         Context context;
 
-        public HorizontalRVAdapter(Context context, ArrayList<String> usernames, ArrayList<String> names, ArrayList imageUris ) {
+        public HorizontalRVAdapter(Context context, ArrayList<String> usernames, ArrayList<String> names) {
             this.context = context;
             this.names = names;
             this.usernames = usernames;
@@ -520,7 +496,6 @@ public class HomepageActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull MyHolder holder, int position) {
             holder.tvTitle.setText(names.get(position));
 
-            showToast(usernames.get(position));
             FirebaseStorage.getInstance().getReference().child("profile_pics")
                     .child(usernames.get(position)).getDownloadUrl()
                     .addOnCompleteListener(task -> {
