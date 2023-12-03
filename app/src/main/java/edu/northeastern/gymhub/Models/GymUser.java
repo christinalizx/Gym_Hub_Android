@@ -11,6 +11,7 @@ public class GymUser {
     private String gym;
     private List<Workout> workoutLog;
     private List<String> connections;
+    private boolean status;
 
     /** Default constructor
      */
@@ -27,12 +28,15 @@ public class GymUser {
         this.gym = gym;
         this.workoutLog = new ArrayList<>();
         this.connections = new ArrayList<>();
+        this.status = false;
 
         // Add a default value (empty string or another default) to ensure the lists are not null
         this.workoutLog.add(new Workout());
         this.connections.add("");
     }
 
+    public boolean getStatus(){return this.status;}
+    public void setStatus(boolean status){this.status = status;}
     public void setConnections(List<String> connections){this.connections = connections;}
     public void addConnection(String username){
         this.connections.add(username);
