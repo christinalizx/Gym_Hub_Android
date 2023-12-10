@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="GymHub"
-        android:textSize="45dp"
+        android:textSize="40dp"
         android:textStyle="bold"
         android:textColor="@color/darkPurple">
     </TextView>
