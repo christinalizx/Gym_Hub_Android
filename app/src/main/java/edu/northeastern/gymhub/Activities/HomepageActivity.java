@@ -1,17 +1,13 @@
 package edu.northeastern.gymhub.Activities;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,14 +22,11 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +39,9 @@ import edu.northeastern.gymhub.Models.ScheduleItem;
 import edu.northeastern.gymhub.R;
 import edu.northeastern.gymhub.Utils.AndroidUtil;
 import edu.northeastern.gymhub.Views.ScheduleAdapter;
+import edu.northeastern.gymhub.Adapters.HorizontalRVAdapter;
+
+
 
 public class HomepageActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -63,11 +59,16 @@ public class HomepageActivity extends AppCompatActivity {
     private HorizontalRVAdapter horizontalRVAdapter;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
+    private HorizontalRVAdapter.RecyclerClickListener listener;
+    private List<GymUser> horizontalRVUsers;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+        horizontalRVUsers = new ArrayList<>();
 
         // Disable ability to go back to login page without logging out
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -214,9 +215,9 @@ public class HomepageActivity extends AppCompatActivity {
                     // Check if the user is at gym and is a connection
                     if (status && userConnections.contains(username)) {
                         // Add data to respective lists
+                        horizontalRVUsers.add(user);
                         usernamesList.add(username);
                         nameList.add(name);
-
 
                     }
                 }
@@ -234,10 +235,28 @@ public class HomepageActivity extends AppCompatActivity {
     }
 
     private void setHorizontalRV(ArrayList<String> usernamesList, ArrayList<String> nameList) {
+        setOnClickListener();
         linearLayoutManager = new LinearLayoutManager(HomepageActivity.this, LinearLayoutManager.HORIZONTAL, false);
-        horizontalRVAdapter = new HorizontalRVAdapter(HomepageActivity.this, usernamesList, nameList);
+        horizontalRVAdapter = new HorizontalRVAdapter(HomepageActivity.this, listener, usernamesList, nameList);
         horizontalRV.setLayoutManager(linearLayoutManager);
         horizontalRV.setAdapter(horizontalRVAdapter);
+    }
+
+    /** Sets methods to adapter listener **/
+    private void setOnClickListener() {
+        listener = new HorizontalRVAdapter.RecyclerClickListener() {
+
+            @Override
+            public void onUserClicked(View v, int position) {
+                GymUser clickedUser = horizontalRVUsers.get(position);
+                showClickedUser(clickedUser);
+            }
+
+        };
+    }
+
+    private void showClickedUser(GymUser gymUser) {
+        AndroidUtil.showClickedUserDialogBox(this, gymUser);
     }
 
     private void scanInCurUser() {
@@ -476,56 +495,55 @@ public class HomepageActivity extends AppCompatActivity {
 
 
 
-
-    /** Adapter for horizontal recycler view **/
-    class HorizontalRVAdapter extends RecyclerView.Adapter<HorizontalRVAdapter.MyHolder> {
-        ArrayList<String> names;
-        ArrayList<String> usernames;
-        Context context;
-
-        public HorizontalRVAdapter(Context context, ArrayList<String> usernames, ArrayList<String> names) {
-            this.context = context;
-            this.names = names;
-            this.usernames = usernames;
-        }
-
-        @NonNull
-        @Override
-        public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(HomepageActivity.this).inflate(R.layout.horizontal_rv_item, parent, false);
-            return new MyHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull MyHolder holder, int position) {
-            holder.tvTitle.setText(names.get(position));
-
-            FirebaseStorage.getInstance().getReference().child("profile_pics")
-                    .child(usernames.get(position)).getDownloadUrl()
-                    .addOnCompleteListener(task -> {
-                        if(task.isSuccessful()){
-                            Uri uri = task.getResult();
-                            AndroidUtil.setProfilePic(context, uri, holder.profilePic);
-                        }
-                    });
-        }
-
-        @Override
-        public int getItemCount() {
-            return names.size();
-        }
-
-        class MyHolder extends RecyclerView.ViewHolder {
-            TextView tvTitle;
-            ImageView profilePic;
-
-            public MyHolder(@NonNull View itemView) {
-                super(itemView);
-                tvTitle = itemView.findViewById(R.id.tvTitle);
-                profilePic = itemView.findViewById(R.id.horizontalRvPic);
-            }
-        }
-
-    }
+//    /** Adapter for horizontal recycler view **/
+//    class HorizontalRVAdapter extends RecyclerView.Adapter<HorizontalRVAdapter.MyHolder> {
+//        ArrayList<String> names;
+//        ArrayList<String> usernames;
+//        Context context;
+//
+//        public HorizontalRVAdapter(Context context, ArrayList<String> usernames, ArrayList<String> names) {
+//            this.context = context;
+//            this.names = names;
+//            this.usernames = usernames;
+//        }
+//
+//        @NonNull
+//        @Override
+//        public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//            View view = LayoutInflater.from(HomepageActivity.this).inflate(R.layout.horizontal_rv_item, parent, false);
+//            return new MyHolder(view);
+//        }
+//
+//        @Override
+//        public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+//            holder.tvTitle.setText(names.get(position));
+//
+//            FirebaseStorage.getInstance().getReference().child("profile_pics")
+//                    .child(usernames.get(position)).getDownloadUrl()
+//                    .addOnCompleteListener(task -> {
+//                        if(task.isSuccessful()){
+//                            Uri uri = task.getResult();
+//                            AndroidUtil.setProfilePic(context, uri, holder.profilePic);
+//                        }
+//                    });
+//        }
+//
+//        @Override
+//        public int getItemCount() {
+//            return names.size();
+//        }
+//
+//        class MyHolder extends RecyclerView.ViewHolder {
+//            TextView tvTitle;
+//            ImageView profilePic;
+//
+//            public MyHolder(@NonNull View itemView) {
+//                super(itemView);
+//                tvTitle = itemView.findViewById(R.id.tvTitle);
+//                profilePic = itemView.findViewById(R.id.horizontalRvPic);
+//            }
+//        }
+//
+//    }
 
 }

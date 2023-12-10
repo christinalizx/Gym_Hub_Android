@@ -8,6 +8,7 @@
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
+        android:id="@id/clickableRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
