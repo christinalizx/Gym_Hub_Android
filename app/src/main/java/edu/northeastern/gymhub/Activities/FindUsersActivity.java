@@ -34,7 +34,6 @@ public class FindUsersActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
     private String curUsername;
-    private GymUser curUser;
     private ImageButton imageButtonBackArrow;
     private FindUsersAdapter adapter;
     private ValueEventListener valueEventListener;
@@ -258,4 +257,8 @@ public class FindUsersActivity extends AppCompatActivity {
             usersRef.removeEventListener(valueEventListener);
         }
     }
+
+
+
+
 }

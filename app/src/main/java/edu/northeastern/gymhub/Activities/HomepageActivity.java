@@ -217,23 +217,12 @@ public class HomepageActivity extends AppCompatActivity {
                         usernamesList.add(username);
                         nameList.add(name);
 
-                        StorageReference picRef = FirebaseStorage.getInstance().getReference().child("profile_pics").child(username);
-                        picRef.getDownloadUrl().addOnCompleteListener(task -> {
-                            if(task.isSuccessful()){
-                                Uri uri = task.getResult();
-                                imageUris.add(uri.toString());
-                            } else {
-                                String defaultUri = "https://firebasestorage.googleapis.com/v0/b/gymhub-7a220.appspot.com/o/profile_pics%2Fhead_img.jpeg?alt=media&token=16842243-c72c-490e-8f0c-52bc9a7d1024";
-                                imageUris.add(defaultUri);
-                            }
-                        });
-
 
                     }
                 }
 
                 // Set recycler view
-                setHorizontalRV(usernamesList, nameList, imageUris);
+                setHorizontalRV(usernamesList, nameList);
 
             }
 
@@ -244,7 +233,7 @@ public class HomepageActivity extends AppCompatActivity {
         });
     }
 
-    private void setHorizontalRV(ArrayList<String> usernamesList, ArrayList<String> nameList, ArrayList<String> imageUris) {
+    private void setHorizontalRV(ArrayList<String> usernamesList, ArrayList<String> nameList) {
         linearLayoutManager = new LinearLayoutManager(HomepageActivity.this, LinearLayoutManager.HORIZONTAL, false);
         horizontalRVAdapter = new HorizontalRVAdapter(HomepageActivity.this, usernamesList, nameList);
         horizontalRV.setLayoutManager(linearLayoutManager);
@@ -407,7 +396,6 @@ public class HomepageActivity extends AppCompatActivity {
             return Color.rgb(144, 238, 144); // Light Green
         }
     }
-
 
     private void setupBarChart(List<Integer> hours, List<Integer> trafficValues, List<Integer> colors) {
         List<BarEntry> entries = new ArrayList<>();

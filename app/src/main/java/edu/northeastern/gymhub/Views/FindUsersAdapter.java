@@ -1,20 +1,25 @@
 package edu.northeastern.gymhub.Views;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.northeastern.gymhub.Models.GymUser;
 import edu.northeastern.gymhub.R;
+import edu.northeastern.gymhub.Utils.AndroidUtil;
 
 public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyViewHolder> {
 
@@ -34,12 +39,15 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
         private TextView userName;
         private Button buttonFollow;
         private Button buttonUnfollow;
+        private ImageView imageViewUser;
 
         public MyViewHolder(final View view) {
             super(view);
             userName = view.findViewById(R.id.textViewUserName);
             buttonFollow = view.findViewById(R.id.buttonFollow);
             buttonUnfollow = view.findViewById(R.id.buttonUnfollow);
+            imageViewUser = view.findViewById(R.id.imageViewUser);
+
 
             // Set OnClickListener for buttonFollow
             buttonFollow.setOnClickListener(new View.OnClickListener() {
@@ -75,8 +83,20 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull FindUsersAdapter.MyViewHolder holder, int position) {
+        String username = usersList.get(position).getUsername();
         String name = usersList.get(position).getName();
         holder.userName.setText(name);
+
+        // Set profile image
+        FirebaseStorage.getInstance().getReference().child("profile_pics")
+                .child(username).getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Uri uri = task.getResult();
+                        AndroidUtil.setProfilePic(context, uri, holder.imageViewUser);
+                    }
+                });
+
 
         // Check if the current user is in the connections of the displayed user
         String displayedUser = usersList.get(position).getUsername();
