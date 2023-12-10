@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +44,7 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
         private Button buttonFollow;
         private Button buttonUnfollow;
         private ImageView imageViewUser;
+        private RelativeLayout clickableRelativeLayout;
 
         public MyViewHolder(final View view) {
             super(view);
@@ -50,6 +52,18 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
             buttonFollow = view.findViewById(R.id.buttonFollow);
             buttonUnfollow = view.findViewById(R.id.buttonUnfollow);
             imageViewUser = view.findViewById(R.id.imageViewUser);
+            clickableRelativeLayout = view.findViewById(R.id.clickableRelativeLayout);
+
+            // Set ability to see user information
+            clickableRelativeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null){
+                        listener.onUserClicked(v, position);
+                    }
+                }
+            });
 
             // Set OnClickListener for buttonFollow
             buttonFollow.setOnClickListener(new View.OnClickListener() {
@@ -131,5 +145,6 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
     public interface RecyclerClickListener {
         void onFollowButtonClick(View v, int position);
         void onUnfollowButtonClick(View v, int position);
+        void onUserClicked(View v, int position);
     }
 }

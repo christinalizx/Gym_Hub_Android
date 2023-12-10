@@ -193,7 +193,7 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:background="@null"
-            app:srcCompat="@drawable/ic_workout"
+            app:srcCompat="@mipmap/ic_barbell_icon_filled"
             android:scaleType="centerInside"
             android:clickable="true"
             android:contentDescription="TODO" />
