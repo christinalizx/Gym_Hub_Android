@@ -107,15 +107,15 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
             holder.buttonUnfollow.setEnabled(false); // Disable the unfollow button
         }
 
-//        // Set profile image
-//        FirebaseStorage.getInstance().getReference().child("profile_pics")
-//                .child(displayedUser).getDownloadUrl()
-//                .addOnCompleteListener(task -> {
-//                    if(task.isSuccessful()){
-//                        Uri uri = task.getResult();
-//                        AndroidUtil.setProfilePic(context, uri, holder.imageViewUser);
-//                    }
-//                });
+        // Set profile image
+        FirebaseStorage.getInstance().getReference().child("profile_pics")
+                .child(displayedUser).getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Uri uri = task.getResult();
+                        AndroidUtil.setProfilePic(context, uri, holder.imageViewUser);
+                    }
+                });
     }
 
     public void updateConnections(List<String> newConnections) {
