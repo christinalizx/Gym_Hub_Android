@@ -130,51 +130,54 @@ public class FindUsersActivity extends AppCompatActivity {
     }
 
     private void showClickedUser(GymUser gymUser) {
-        // Inflate the dialog layout
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_user_info, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(dialogView);
 
-        // Find views in the inflated layout
-        final TextView userName = dialogView.findViewById(R.id.textViewUserName);
-        final TextView username = dialogView.findViewById(R.id.textViewUsername);
-        final TextView gym = dialogView.findViewById(R.id.textViewGym);
-        final TextView status = dialogView.findViewById(R.id.textViewStatus);
-        final ImageView pic = dialogView.findViewById(R.id.imageViewUser);
-        final Button buttonOK = dialogView.findViewById(R.id.buttonOK);
+        AndroidUtil.showClickedUserDialogBox(this, gymUser);
 
-        // Create and show the dialog
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
-        // Set click listeners for Cancel and Update buttons
-        buttonOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        // Set info
-        userName.setText(gymUser.getName());
-        username.setText(gymUser.getUsername());
-        gym.setText(gymUser.getGym());
-        if(gymUser.getStatus()){
-            status.setText("Status:\nCurrently working out!");
-        }else{
-            status.setText("Status\nNot currently at gym.");
-        }
-
-        // Set profile image
-        FirebaseStorage.getInstance().getReference().child("profile_pics")
-                .child(gymUser.getUsername()).getDownloadUrl()
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        Uri uri = task.getResult();
-                        AndroidUtil.setProfilePic(this, uri, pic);
-                    }
-                });
-
+//        // Inflate the dialog layout
+//        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_user_info, null);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setView(dialogView);
+//
+//        // Find views in the inflated layout
+//        final TextView userName = dialogView.findViewById(R.id.textViewUserName);
+//        final TextView username = dialogView.findViewById(R.id.textViewUsername);
+//        final TextView gym = dialogView.findViewById(R.id.textViewGym);
+//        final TextView status = dialogView.findViewById(R.id.textViewStatus);
+//        final ImageView pic = dialogView.findViewById(R.id.imageViewUser);
+//        final Button buttonOK = dialogView.findViewById(R.id.buttonOK);
+//
+//        // Create and show the dialog
+//        final AlertDialog dialog = builder.create();
+//        dialog.show();
+//
+//        // Set click listeners for Cancel and Update buttons
+//        buttonOK.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        // Set info
+//        userName.setText(gymUser.getName());
+//        username.setText(gymUser.getUsername());
+//        gym.setText(gymUser.getGym());
+//        if(gymUser.getStatus()){
+//            status.setText("Currently working out!");
+//        }else{
+//            status.setText("Not currently at gym.");
+//        }
+//
+//        // Set profile image
+//        FirebaseStorage.getInstance().getReference().child("profile_pics")
+//                .child(gymUser.getUsername()).getDownloadUrl()
+//                .addOnCompleteListener(task -> {
+//                    if(task.isSuccessful()){
+//                        Uri uri = task.getResult();
+//                        AndroidUtil.setProfilePic(this, uri, pic);
+//                    }
+//                });
+//
 
     }
 
