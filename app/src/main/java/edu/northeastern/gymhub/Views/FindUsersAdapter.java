@@ -12,11 +12,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.northeastern.gymhub.Activities.FindUsersActivity;
 import edu.northeastern.gymhub.Models.GymUser;
 import edu.northeastern.gymhub.R;
 import edu.northeastern.gymhub.Utils.AndroidUtil;
@@ -47,7 +50,6 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
             buttonFollow = view.findViewById(R.id.buttonFollow);
             buttonUnfollow = view.findViewById(R.id.buttonUnfollow);
             imageViewUser = view.findViewById(R.id.imageViewUser);
-
 
             // Set OnClickListener for buttonFollow
             buttonFollow.setOnClickListener(new View.OnClickListener() {
@@ -83,20 +85,8 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull FindUsersAdapter.MyViewHolder holder, int position) {
-        String username = usersList.get(position).getUsername();
         String name = usersList.get(position).getName();
         holder.userName.setText(name);
-
-        // Set profile image
-        FirebaseStorage.getInstance().getReference().child("profile_pics")
-                .child(username).getDownloadUrl()
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        Uri uri = task.getResult();
-                        AndroidUtil.setProfilePic(context, uri, holder.imageViewUser);
-                    }
-                });
-
 
         // Check if the current user is in the connections of the displayed user
         String displayedUser = usersList.get(position).getUsername();
@@ -116,6 +106,16 @@ public class FindUsersAdapter extends RecyclerView.Adapter<FindUsersAdapter.MyVi
             holder.buttonUnfollow.setVisibility(View.GONE);
             holder.buttonUnfollow.setEnabled(false); // Disable the unfollow button
         }
+
+//        // Set profile image
+//        FirebaseStorage.getInstance().getReference().child("profile_pics")
+//                .child(displayedUser).getDownloadUrl()
+//                .addOnCompleteListener(task -> {
+//                    if(task.isSuccessful()){
+//                        Uri uri = task.getResult();
+//                        AndroidUtil.setProfilePic(context, uri, holder.imageViewUser);
+//                    }
+//                });
     }
 
     public void updateConnections(List<String> newConnections) {
