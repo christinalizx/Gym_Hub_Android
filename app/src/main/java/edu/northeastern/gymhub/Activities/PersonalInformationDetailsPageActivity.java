@@ -141,38 +141,8 @@ public class PersonalInformationDetailsPageActivity extends AppCompatActivity {
     }
 
     private void updateUserStatus() {
-        // Connect to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference usersRef = database.getReference("users");
-
-        usersRef.child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // Add connection to user
-                GymUser curUser = snapshot.getValue(GymUser.class);
-                if (curUser != null) {
-                    curUser.setStatus(false);
-
-                    // Update database
-                    usersRef.child(curUsername).setValue(curUser)
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    // Notify the adapter that the data set has changed
-                                    AndroidUtil.showToast(getApplicationContext(),"You have logged out.");
-                                }
-                            });
-                } else {
-                    showToast("Failed to log out");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                AndroidUtil.handleDatabaseError(error);
-            }
-        });
+        AndroidUtil.logoutUserFromDB(getApplicationContext(), curUsername);
     }
-
 
     private void getUserPic(String curUsername) {
         StorageReference picRef = FirebaseStorage.getInstance().getReference().child("profile_pics").child(curUsername);

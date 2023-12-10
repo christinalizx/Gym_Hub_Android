@@ -41,8 +41,6 @@ import edu.northeastern.gymhub.Utils.AndroidUtil;
 import edu.northeastern.gymhub.Views.ScheduleAdapter;
 import edu.northeastern.gymhub.Adapters.HorizontalRVAdapter;
 
-
-
 public class HomepageActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ScheduleAdapter scheduleAdapter;
@@ -270,7 +268,7 @@ public class HomepageActivity extends AppCompatActivity {
                 // If not scanned in
                 if(!status){
                     statusRef.setValue(true);
-                    scanInButton.setText("Scan Out");
+                    scanInButton.setText("SCAN OUT");
                     int color = ContextCompat.getColor(HomepageActivity.this, R.color.lightRed);
                     scanInButton.setBackgroundColor(color);
                     AndroidUtil.showToast(HomepageActivity.this, "You have scanned in.");
@@ -278,7 +276,7 @@ public class HomepageActivity extends AppCompatActivity {
                     // If scanned out
                 } else{
                     statusRef.setValue(false);
-                    scanInButton.setText("Scan In");
+                    scanInButton.setText("SCAN IN");
                     int color = ContextCompat.getColor(HomepageActivity.this, R.color.green);
                     scanInButton.setBackgroundColor(color);
                     AndroidUtil.showToast(HomepageActivity.this, "You have scanned out.");
@@ -491,59 +489,5 @@ public class HomepageActivity extends AppCompatActivity {
         // Format the time as needed
         return String.format(Locale.getDefault(), "%02d:%02d - %02d:%02d", startHour, startMinute, endHour, endMinute);
     }
-
-
-
-
-//    /** Adapter for horizontal recycler view **/
-//    class HorizontalRVAdapter extends RecyclerView.Adapter<HorizontalRVAdapter.MyHolder> {
-//        ArrayList<String> names;
-//        ArrayList<String> usernames;
-//        Context context;
-//
-//        public HorizontalRVAdapter(Context context, ArrayList<String> usernames, ArrayList<String> names) {
-//            this.context = context;
-//            this.names = names;
-//            this.usernames = usernames;
-//        }
-//
-//        @NonNull
-//        @Override
-//        public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//            View view = LayoutInflater.from(HomepageActivity.this).inflate(R.layout.horizontal_rv_item, parent, false);
-//            return new MyHolder(view);
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(@NonNull MyHolder holder, int position) {
-//            holder.tvTitle.setText(names.get(position));
-//
-//            FirebaseStorage.getInstance().getReference().child("profile_pics")
-//                    .child(usernames.get(position)).getDownloadUrl()
-//                    .addOnCompleteListener(task -> {
-//                        if(task.isSuccessful()){
-//                            Uri uri = task.getResult();
-//                            AndroidUtil.setProfilePic(context, uri, holder.profilePic);
-//                        }
-//                    });
-//        }
-//
-//        @Override
-//        public int getItemCount() {
-//            return names.size();
-//        }
-//
-//        class MyHolder extends RecyclerView.ViewHolder {
-//            TextView tvTitle;
-//            ImageView profilePic;
-//
-//            public MyHolder(@NonNull View itemView) {
-//                super(itemView);
-//                tvTitle = itemView.findViewById(R.id.tvTitle);
-//                profilePic = itemView.findViewById(R.id.horizontalRvPic);
-//            }
-//        }
-//
-//    }
 
 }
