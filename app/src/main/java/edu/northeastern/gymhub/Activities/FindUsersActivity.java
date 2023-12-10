@@ -64,23 +64,6 @@ public class FindUsersActivity extends AppCompatActivity {
             }
         });
 
-        // Go to forum page
-        ImageButton forum = findViewById(R.id.imageButtonForum);
-        forum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(FindUsersActivity.this, ForumActivity.class));
-            }
-        });
-
-        // Go to workout page
-        ImageButton workout = findViewById(R.id.imageButtonWorkout);
-        workout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(FindUsersActivity.this, WorkoutPageActivity.class));
-            }
-        });
 
 
         usersRef.child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
