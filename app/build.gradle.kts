@@ -57,9 +57,10 @@ dependencies {
     implementation ("com.stone.vega.library:VegaLayoutManager:1.0.6")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.github.tlaabs:TimetableView:1.0.3-fx1")
+    implementation("com.github.alamkanak:android-week-view:1.2.6")
+    implementation("androidx.core:core-ktx:1.6.0")
     implementation ("com.github.dhaval2404:imagepicker:2.1")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
-
 
 
 }

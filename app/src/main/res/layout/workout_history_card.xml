@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Display Date -->
+        <TextView
+            android:id="@+id/textViewCardDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date: "
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Display Type -->
+        <TextView
+            android:id="@+id/textViewCardType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Type: "
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Display Data1, Data2, Data3 -->
+        <TextView
+            android:id="@+id/textViewCardData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Data: "
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Display Notes -->
+        <TextView
+            android:id="@+id/textViewCardNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Notes: "
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

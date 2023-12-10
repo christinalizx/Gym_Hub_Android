@@ -30,6 +30,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -49,9 +50,12 @@ import edu.northeastern.gymhub.Views.ScheduleAdapter;
 public class HomepageActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ScheduleAdapter scheduleAdapter;
+    private RecyclerView recyclerViewPlan;
+    private ScheduleAdapter todaysPlanAdapter;
     private DatabaseReference schedulesRef;
     private DatabaseReference trafficRef;
     private BarChart barChart;
+    private String userName;
     private String gymName;
     private String curUsername;
     private Button scanInButton;
@@ -70,6 +74,7 @@ public class HomepageActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         gymName = preferences.getString("GymName", "Default Gym Name").toLowerCase();
         curUsername = preferences.getString("Username", "Default User");
+        userName = preferences.getString("Username", "Default User");
         TextView gymNameTextView = findViewById(R.id.textViewGymName);
         gymNameTextView.setText(gymName);
 
@@ -106,7 +111,8 @@ public class HomepageActivity extends AppCompatActivity {
         forum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomepageActivity.this, ForumActivity.class));
+                Intent intent = new Intent(HomepageActivity.this, ForumActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -128,6 +134,17 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
 
+        // Go to workout page
+        ImageButton workout = findViewById(R.id.imageButtonWorkout);
+        workout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create an Intent to start the Workout activity
+                Intent intent = new Intent(HomepageActivity.this, WorkoutPageActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // Schedule
         Button schedule = findViewById(R.id.buttonCheckThisWeek);
         schedule.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +163,12 @@ public class HomepageActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         scheduleAdapter = new ScheduleAdapter();
         recyclerView.setAdapter(scheduleAdapter);
+
+        recyclerViewPlan = findViewById(R.id.recyclerViewTodayPlan);
+        recyclerViewPlan.setLayoutManager(new LinearLayoutManager(this));
+        todaysPlanAdapter = new ScheduleAdapter();
+        recyclerViewPlan.setAdapter(todaysPlanAdapter);
+        fetchAndDisplayTodayPlan();
 
         // Fetch and display today's schedule
         fetchAndDisplayTodaySchedule();
@@ -323,6 +346,7 @@ public class HomepageActivity extends AppCompatActivity {
 
     }
 
+
     private String getCurrentDay() {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE", Locale.getDefault());
         Date d = new Date();
@@ -390,6 +414,7 @@ public class HomepageActivity extends AppCompatActivity {
         }
     }
 
+
     private void setupBarChart(List<Integer> hours, List<Integer> trafficValues, List<Integer> colors) {
         List<BarEntry> entries = new ArrayList<>();
 
@@ -410,6 +435,64 @@ public class HomepageActivity extends AppCompatActivity {
         // Refresh the chart to update the display
         barChart.invalidate();
     }
+    private void fetchAndDisplayTodayPlan() {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userName).child("classScheduled");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String todayDate = sdf.format(new Date());
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<ScheduleItem> todayPlanItems = new ArrayList<>();
+
+                // Iterate through registration keys
+                for (DataSnapshot registrationKeySnapshot : dataSnapshot.getChildren()) {
+                        String date = registrationKeySnapshot.child("date").getValue(String.class);
+
+                        if (todayDate.equals(date)) {
+                            String className = registrationKeySnapshot.child("className").getValue(String.class);
+
+                            // Retrieve the start and end times as integers
+                            int startHour = registrationKeySnapshot.child("startTime").child("hour").getValue(Integer.class);
+                            int startMinute = registrationKeySnapshot.child("startTime").child("minute").getValue(Integer.class);
+                            int endHour = registrationKeySnapshot.child("endTime").child("hour").getValue(Integer.class);
+                            int endMinute = registrationKeySnapshot.child("endTime").child("minute").getValue(Integer.class);
+
+                            // Format the time
+                            String formattedTime = formatTime(startHour, startMinute, endHour, endMinute);
+
+                            // Create a ScheduleItem object with the retrieved data
+                            ScheduleItem todayPlanItem = new ScheduleItem(className, formattedTime);
+                            todayPlanItems.add(todayPlanItem);
+                        }
+
+                }
+
+                // Clear the previous data in the adapter
+                todaysPlanAdapter.clearSchedule();
+
+                // Add the today's plan to the adapter
+                todaysPlanAdapter.setScheduleList(todayPlanItems);
+
+                // Notify the adapter that the data has changed
+                todaysPlanAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors
+            }
+        });
+    }
+
+    private String formatTime(int startHour, int startMinute, int endHour, int endMinute) {
+        // Format the time as needed
+        return String.format(Locale.getDefault(), "%02d:%02d - %02d:%02d", startHour, startMinute, endHour, endMinute);
+    }
+
+
+
 
 
     /** Adapter for horizontal recycler view **/
