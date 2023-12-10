@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -67,6 +68,13 @@ public class HomepageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+        // Disable ability to go back to login page without logging out
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        });
 
         // Inside onCreate() method, after setting the content view
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
@@ -259,7 +267,7 @@ public class HomepageActivity extends AppCompatActivity {
                     scanInButton.setBackgroundColor(color);
                     AndroidUtil.showToast(HomepageActivity.this, "You have scanned in.");
 
-                // If scanned out
+                    // If scanned out
                 } else{
                     statusRef.setValue(false);
                     scanInButton.setText("Scan In");
@@ -434,24 +442,24 @@ public class HomepageActivity extends AppCompatActivity {
 
                 // Iterate through registration keys
                 for (DataSnapshot registrationKeySnapshot : dataSnapshot.getChildren()) {
-                        String date = registrationKeySnapshot.child("date").getValue(String.class);
+                    String date = registrationKeySnapshot.child("date").getValue(String.class);
 
-                        if (todayDate.equals(date)) {
-                            String className = registrationKeySnapshot.child("className").getValue(String.class);
+                    if (todayDate.equals(date)) {
+                        String className = registrationKeySnapshot.child("className").getValue(String.class);
 
-                            // Retrieve the start and end times as integers
-                            int startHour = registrationKeySnapshot.child("startTime").child("hour").getValue(Integer.class);
-                            int startMinute = registrationKeySnapshot.child("startTime").child("minute").getValue(Integer.class);
-                            int endHour = registrationKeySnapshot.child("endTime").child("hour").getValue(Integer.class);
-                            int endMinute = registrationKeySnapshot.child("endTime").child("minute").getValue(Integer.class);
+                        // Retrieve the start and end times as integers
+                        int startHour = registrationKeySnapshot.child("startTime").child("hour").getValue(Integer.class);
+                        int startMinute = registrationKeySnapshot.child("startTime").child("minute").getValue(Integer.class);
+                        int endHour = registrationKeySnapshot.child("endTime").child("hour").getValue(Integer.class);
+                        int endMinute = registrationKeySnapshot.child("endTime").child("minute").getValue(Integer.class);
 
-                            // Format the time
-                            String formattedTime = formatTime(startHour, startMinute, endHour, endMinute);
+                        // Format the time
+                        String formattedTime = formatTime(startHour, startMinute, endHour, endMinute);
 
-                            // Create a ScheduleItem object with the retrieved data
-                            ScheduleItem todayPlanItem = new ScheduleItem(className, formattedTime);
-                            todayPlanItems.add(todayPlanItem);
-                        }
+                        // Create a ScheduleItem object with the retrieved data
+                        ScheduleItem todayPlanItem = new ScheduleItem(className, formattedTime);
+                        todayPlanItems.add(todayPlanItem);
+                    }
 
                 }
 

@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class PersonalInformationDetailsPageActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> imagePickerLauncher;
     Uri selectedImageUri;
     private Button updateButton;
+    private Button logoutButton;
     private String curUsername;
 
     @Override
@@ -44,7 +46,7 @@ public class PersonalInformationDetailsPageActivity extends AppCompatActivity {
         // Get current user
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         curUsername = preferences.getString("Username", "Default User");
-        
+
         // Set profile pic
         imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -56,7 +58,7 @@ public class PersonalInformationDetailsPageActivity extends AppCompatActivity {
                         }
                     }
                 }
-                );
+        );
         profilePic = findViewById(R.id.people_logo);
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +72,15 @@ public class PersonalInformationDetailsPageActivity extends AppCompatActivity {
                             }
                         });
 
+            }
+        });
+
+        // Logout button
+        logoutButton = findViewById(R.id.buttonLogout);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logoutUser();
             }
         });
 
@@ -101,10 +112,24 @@ public class PersonalInformationDetailsPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        
-        
+
+
         getUserPic(curUsername);
     }
+
+    private void logoutUser() {
+        // Clear SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+
+        // Start HomepageActivity
+        Intent intent = new Intent(PersonalInformationDetailsPageActivity.this, SignInActivity.class);
+        startActivity(intent);
+        finish(); // Finish the current activity to prevent going back to it from the HomepageActivity
+    }
+
 
     private void getUserPic(String curUsername) {
         StorageReference picRef = FirebaseStorage.getInstance().getReference().child("profile_pics").child(curUsername);
