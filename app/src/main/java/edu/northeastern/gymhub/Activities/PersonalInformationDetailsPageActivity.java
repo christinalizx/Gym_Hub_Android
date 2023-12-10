@@ -16,15 +16,23 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import edu.northeastern.gymhub.Models.GymUser;
 import edu.northeastern.gymhub.R;
+import edu.northeastern.gymhub.Utils.AndroidUtil;
 import edu.northeastern.gymhub.Utils.CircleImageView;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -124,10 +132,45 @@ public class PersonalInformationDetailsPageActivity extends AppCompatActivity {
         editor.clear();
         editor.apply();
 
+        updateUserStatus();
+
         // Start HomepageActivity
         Intent intent = new Intent(PersonalInformationDetailsPageActivity.this, SignInActivity.class);
         startActivity(intent);
         finish(); // Finish the current activity to prevent going back to it from the HomepageActivity
+    }
+
+    private void updateUserStatus() {
+        // Connect to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("users");
+
+        usersRef.child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Add connection to user
+                GymUser curUser = snapshot.getValue(GymUser.class);
+                if (curUser != null) {
+                    curUser.setStatus(false);
+
+                    // Update database
+                    usersRef.child(curUsername).setValue(curUser)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    // Notify the adapter that the data set has changed
+                                    AndroidUtil.showToast(getApplicationContext(),"You have logged out.");
+                                }
+                            });
+                } else {
+                    showToast("Failed to log out");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                AndroidUtil.handleDatabaseError(error);
+            }
+        });
     }
 
 
