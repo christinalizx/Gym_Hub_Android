@@ -12,7 +12,8 @@
         android:layout_marginRight="@dimen/recycler_item_margin"
         android:layout_marginTop="@dimen/recycler_item_margin_top"
         app:cardCornerRadius="5dp"
-        app:cardElevation="5dp">
+        app:cardElevation="5dp"
+        android:backgroundTint="@color/lightPurple2">
 
         <LinearLayout
             android:layout_width="match_parent"
