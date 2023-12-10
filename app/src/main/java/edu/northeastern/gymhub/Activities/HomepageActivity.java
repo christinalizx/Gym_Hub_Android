@@ -30,7 +30,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -55,7 +54,6 @@ public class HomepageActivity extends AppCompatActivity {
     private DatabaseReference schedulesRef;
     private DatabaseReference trafficRef;
     private BarChart barChart;
-    private String userName;
     private String gymName;
     private String curUsername;
     private Button scanInButton;
@@ -74,7 +72,6 @@ public class HomepageActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         gymName = preferences.getString("GymName", "Default Gym Name").toLowerCase();
         curUsername = preferences.getString("Username", "Default User");
-        userName = preferences.getString("Username", "Default User");
         TextView gymNameTextView = findViewById(R.id.textViewGymName);
         gymNameTextView.setText(gymName);
 
@@ -131,17 +128,6 @@ public class HomepageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 scanInCurUser();
-            }
-        });
-
-        // Go to workout page
-        ImageButton workout = findViewById(R.id.imageButtonWorkout);
-        workout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create an Intent to start the Workout activity
-                Intent intent = new Intent(HomepageActivity.this, WorkoutPageActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -436,7 +422,7 @@ public class HomepageActivity extends AppCompatActivity {
         barChart.invalidate();
     }
     private void fetchAndDisplayTodayPlan() {
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userName).child("classScheduled");
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(curUsername).child("classScheduled");
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String todayDate = sdf.format(new Date());
