@@ -162,7 +162,7 @@
     <LinearLayout
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:background="@color/darkPurple"
@@ -171,13 +171,13 @@
         <ImageButton
             android:id="@+id/imageButtonHome"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@null"
-            app:srcCompat="@drawable/ic_home"
-            android:scaleType="centerInside"
             android:clickable="true"
-            android:contentDescription="TODO" />
+            android:contentDescription="TODO"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_home_filled" />
 
         <ImageButton
             android:id="@+id/imageButtonWorkout"

@@ -117,7 +117,7 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:background="@null"
-            app:srcCompat="@drawable/ic_forum"
+            app:srcCompat="@drawable/ic_forum_filled"
             android:scaleType="centerInside"
             android:clickable="true"
             android:contentDescription="TODO" />
