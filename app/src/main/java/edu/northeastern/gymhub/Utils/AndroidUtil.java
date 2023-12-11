@@ -12,11 +12,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -85,5 +90,42 @@ public class AndroidUtil {
                 });
 
 
+    }
+
+    public static void logoutUserFromDB(Context context, String curUsername){
+        // Connect to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("users");
+
+        usersRef.child(curUsername).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Add connection to user
+                GymUser curUser = snapshot.getValue(GymUser.class);
+                if (curUser != null) {
+                    curUser.setStatus(false);
+
+                    // Update database
+                    usersRef.child(curUsername).setValue(curUser)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+
+                                    if(context != null){
+                                        AndroidUtil.showToast(context,"You have logged out.");
+                                    }
+                                }
+                            });
+                } else {
+                    if (context != null) {
+                        showToast(context, "Failed to log out");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                AndroidUtil.handleDatabaseError(error);
+            }
+        });
     }
 }
