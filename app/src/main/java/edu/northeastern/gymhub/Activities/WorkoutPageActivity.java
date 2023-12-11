@@ -166,12 +166,12 @@ public class WorkoutPageActivity extends AppCompatActivity {
     // Update hints based on the selected exercise type
     private void updateHintsForExerciseType(String selectedExerciseType) {
         switch (selectedExerciseType) {
-            case "Cardiovascular Exercises":
+            case "Cardiovascular":
                 editTextWeightChoice.setHint("Duration (min)");
                 editTextSetsChoice.setHint("Length (km/miles)");
                 editTextRepsChoice.setHint("Pace (mph/kph)");
                 break;
-            case "Strength Training Exercises":
+            case "Strength Training":
                 editTextWeightChoice.setHint("Weight");
                 editTextSetsChoice.setHint("Sets");
                 editTextRepsChoice.setHint("Reps");

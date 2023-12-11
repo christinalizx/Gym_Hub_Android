@@ -30,9 +30,9 @@ public class Workout {
 
     public String getDataInfo() {
         // Adjust this method based on your data structure
-        if ("Strength Training Exercises".equals(type)) {
+        if ("Strength Training".equals(type)) {
             return "Weight: " + data1 + ", Sets: " + data2 + ", Reps: " + data3;
-        } else if ("Cardiovascular Exercises".equals(type)) {
+        } else if ("Cardiovascular".equals(type)) {
             return "Duration: " + data1 + " min, Length: " + data2 + " km/miles, Pace: " + data3 + " mph/kph";
         } else {
             // Handle other types if needed
