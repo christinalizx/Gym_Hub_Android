@@ -101,11 +101,11 @@ public class WorkoutPageActivity extends AppCompatActivity {
         // Set up Spinner
         Spinner exerciseTypeSpinner = findViewById(R.id.spinnerExerciseType);
         String[] exerciseTypes = new String[]{
-                "Cardiovascular Exercises",
-                "Strength Training Exercises"
+                "Cardiovascular",
+                "Strength Training"
         };
         ArrayAdapter<String> exerciseTypeAdapter = new ArrayAdapter<>(
-                getApplicationContext(), R.layout.simple_dropdown_item, exerciseTypes);
+                getApplicationContext(), R.layout.simple_dropdown_item_black_text, exerciseTypes);
         exerciseTypeSpinner.setAdapter(exerciseTypeAdapter);
         exerciseType = exerciseTypeSpinner.getSelectedItem().toString();
 
