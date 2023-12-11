@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <!-- Top Title Section -->
     <TextView
@@ -32,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="10dp">
 
             <!-- Title for Date -->
             <TextView
@@ -70,7 +74,7 @@
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:textColor="@color/black"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginEnd="8dp"/>
 
             <!-- Display Today's Workout Summary -->
@@ -88,8 +92,8 @@
         <Spinner
             android:id="@+id/spinnerExerciseType"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"/>
+            android:layout_height="40dp"
+            android:layout_marginBottom="15dp"/>
 
         <!-- Choices for weight/sets/reps input -->
         <LinearLayout
@@ -131,7 +135,8 @@
             android:layout_width="392dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Notes" />
+            android:hint="Notes"
+            android:layout_marginTop="8dp"/>
 
 
         <Button
@@ -221,3 +226,4 @@
             android:contentDescription="TODO" />
     </LinearLayout>
 </RelativeLayout>
+</ScrollView>
