@@ -159,7 +159,6 @@ public class HomepageActivity extends AppCompatActivity {
 
         barChart = findViewById(R.id.barChart);
         fetchAndDisplayHourlyTraffic();
-
     }
 
     private void fetchHorizontalRvData() {
@@ -178,7 +177,6 @@ public class HomepageActivity extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 AndroidUtil.handleDatabaseError(error);
@@ -210,12 +208,10 @@ public class HomepageActivity extends AppCompatActivity {
 
                     }
                 }
-
                 // Set recycler view
                 setHorizontalRV(usernamesList, nameList);
 
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 AndroidUtil.handleDatabaseError(databaseError);
@@ -258,12 +254,12 @@ public class HomepageActivity extends AppCompatActivity {
                 // Set the initial state based on the database status
                 if (status != null && status) {
                     // If scanned in
-                    scanInButton.setText("Scan Out");
+                    scanInButton.setText("SCAN OUT");
                     int color = ContextCompat.getColor(HomepageActivity.this, R.color.lightRed);
                     scanInButton.setBackgroundColor(color);
                 } else {
                     // If not scanned in (or status is null)
-                    scanInButton.setText("Scan In");
+                    scanInButton.setText("SCAN IN");
                     int color = ContextCompat.getColor(HomepageActivity.this, R.color.green);
                     scanInButton.setBackgroundColor(color);
                 }
@@ -361,10 +357,7 @@ public class HomepageActivity extends AppCompatActivity {
 
         // Notify the adapter that the data has changed
         scheduleAdapter.notifyDataSetChanged();
-
-
     }
-
 
     private String getCurrentDay() {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE", Locale.getDefault());
@@ -453,6 +446,7 @@ public class HomepageActivity extends AppCompatActivity {
         // Refresh the chart to update the display
         barChart.invalidate();
     }
+
     private void fetchAndDisplayTodayPlan() {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(curUsername).child("classScheduled");
 
@@ -496,7 +490,6 @@ public class HomepageActivity extends AppCompatActivity {
                 // Notify the adapter that the data has changed
                 todaysPlanAdapter.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle errors
@@ -508,5 +501,4 @@ public class HomepageActivity extends AppCompatActivity {
         // Format the time as needed
         return String.format(Locale.getDefault(), "%02d:%02d - %02d:%02d", startHour, startMinute, endHour, endMinute);
     }
-
 }
