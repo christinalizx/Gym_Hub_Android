@@ -133,6 +133,8 @@ public class HomepageActivity extends AppCompatActivity {
 
         // Scan in user to gym
         scanInButton = findViewById(R.id.scanInButton);
+        setButtonInitialState();
+
         scanInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,6 +259,34 @@ public class HomepageActivity extends AppCompatActivity {
 
     private void showClickedUser(GymUser gymUser) {
         AndroidUtil.showClickedUserDialogBox(this, gymUser);
+    }
+
+    private void setButtonInitialState() {
+        DatabaseReference statusRef = usersRef.child(curUsername).child("status");
+        statusRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Boolean status = snapshot.getValue(Boolean.class);
+
+                // Set the initial state based on the database status
+                if (status != null && status) {
+                    // If scanned in
+                    scanInButton.setText("Scan Out");
+                    int color = ContextCompat.getColor(HomepageActivity.this, R.color.lightRed);
+                    scanInButton.setBackgroundColor(color);
+                } else {
+                    // If not scanned in (or status is null)
+                    scanInButton.setText("Scan In");
+                    int color = ContextCompat.getColor(HomepageActivity.this, R.color.green);
+                    scanInButton.setBackgroundColor(color);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                AndroidUtil.showToast(HomepageActivity.this, "Error getting initial status.");
+            }
+        });
     }
 
     private void scanInCurUser() {
