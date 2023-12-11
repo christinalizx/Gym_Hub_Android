@@ -3,6 +3,7 @@ package edu.northeastern.gymhub.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -69,6 +70,15 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
             }
         });
 
+        Button buttonSignIn = findViewById(R.id.buttonSignIn);
+        buttonSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, SignInActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     // Callback method
@@ -97,11 +107,21 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         showToast("You are now a GymHub member.");
+
+
+                        // Save Gym Name to SharedPreferences
+                        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("GymName", newUser.getGym());
+                        editor.putString("Username", newUser.getUsername());
+                        editor.apply();
+
                         startActivity(new Intent(RegisterActivity.this, HomepageActivity.class));
                     } else {
                         showToast("There has been an error with your registration.");
                     }
                 });
+
     }
 
     private void checkInputs() {

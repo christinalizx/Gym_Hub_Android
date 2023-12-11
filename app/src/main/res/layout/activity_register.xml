@@ -9,12 +9,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:background="@color/darkPurple"
             tools:context=".Activities.RegisterActivity">
 
@@ -22,29 +23,24 @@
                 android:id="@+id/textViewWelcomeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="179dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="179dp"
-                android:layout_marginBottom="32dp"
                 android:text="GymHub"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="30sp"
-                app:layout_constraintBottom_toTopOf="@+id/editTextFirstName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                tools:layout_editor_absoluteX="148dp"
+                tools:layout_editor_absoluteY="37dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
 
 
             <EditText
                 android:id="@+id/editTextFirstName"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="22dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/border_layout"
                 android:drawableLeft="@drawable/ic_person_icon"
                 android:drawablePadding="4dp"
@@ -55,19 +51,18 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@id/editTextLastName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewWelcomeText" />
+                tools:layout_editor_absoluteX="22dp"
+                tools:layout_editor_absoluteY="114dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
 
             <EditText
                 android:id="@+id/editTextLastName"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginEnd="22dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/border_layout"
                 android:drawableLeft="@drawable/ic_person_icon"
                 android:drawablePadding="4dp"
@@ -78,18 +73,18 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextFirstName" />
+                tools:layout_editor_absoluteX="22dp"
+                tools:layout_editor_absoluteY="166dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
 
             <EditText
                 android:id="@+id/editTextEmail"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginEnd="22dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/border_layout"
                 android:drawableLeft="@drawable/ic_email_icon"
                 android:drawablePadding="4dp"
@@ -100,18 +95,18 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@+id/editTextUsername"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextLastName" />
+                tools:layout_editor_absoluteX="22dp"
+                tools:layout_editor_absoluteY="219dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
 
             <EditText
                 android:id="@+id/editTextUsername"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginEnd="22dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/border_layout"
                 android:drawableLeft="@drawable/ic_person_icon"
                 android:drawablePadding="4dp"
@@ -122,19 +117,18 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
-                app:layout_constraintVertical_bias="0.5" />
+                tools:layout_editor_absoluteX="22dp"
+                tools:layout_editor_absoluteY="271dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
 
             <EditText
                 android:id="@+id/editTextPassword"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginEnd="22dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/border_layout"
                 android:drawableLeft="@drawable/ic_password_icon"
                 android:drawablePadding="4dp"
@@ -145,42 +139,70 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@+id/spinnerGym"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextUsername" />
+                tools:layout_editor_absoluteX="22dp"
+                tools:layout_editor_absoluteY="323dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
 
             <Spinner
                 android:id="@+id/spinnerGym"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginEnd="22dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/border_layout"
                 android:padding="6dp"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
-                app:layout_constraintBottom_toTopOf="@+id/buttonRegister"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+                tools:layout_editor_absoluteX="22dp"
+                tools:layout_editor_absoluteY="375dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
 
             <Button
                 android:id="@+id/buttonRegister"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_marginEnd="60dp"
                 android:text="Sign Up"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerGym" />
+                tools:layout_editor_absoluteX="60dp"
+                tools:layout_editor_absoluteY="450dp"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textViewSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Returning user?"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="142dp"
+                tools:layout_editor_absoluteY="528dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp">
+
+            </TextView>
+
+            <Button
+                android:id="@+id/buttonSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign In"
+                android:textSize="20sp"
+                tools:layout_editor_absoluteX="60dp"
+                tools:layout_editor_absoluteY="563dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>
