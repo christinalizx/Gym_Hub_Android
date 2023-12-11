@@ -6,7 +6,7 @@
 
 Integrating fitness into your life has never been easier. GymHub, your ultimate fitness companion, empowers you to maximize your gym experience. Benefit from real-time gym traffic updates, effortless workout logging, and a vibrant fitness community. Schedule workout classes, invite friends to join you, or even share your latest workout. GymHub has it all. Discover a new way to stay motivated, connect with like-minded fitness enthusiasts, and get the most out of your gym membership - all in one app.
 
-### Features
+## Features
 -	Scan in to your gym
 -	See schedule of the week’s available classes
 -	Register for classes
@@ -16,7 +16,7 @@ Integrating fitness into your life has never been easier. GymHub, your ultimate 
 -	Use communication forums to connect with fellow gym goers
 -	Comment and like other user’s posts
 
-### Contributors
+## Contributors
 
 **Zixi Li**
 
