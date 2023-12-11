@@ -43,7 +43,7 @@ public class ForumActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         gymName = preferences.getString("GymName", "Default Gym Name").toLowerCase();
         TextView gymNameTextView = findViewById(R.id.textViewGymName);
-        gymNameTextView.setText(gymName);
+        //gymNameTextView.setText(gymName);
 
         if (savedInstanceState != null) {
             postList = savedInstanceState.getParcelableArrayList("postList");

@@ -154,6 +154,16 @@ public class PersonalInformationDetailsPageActivity extends AppCompatActivity {
             }
         });
 
+        // Go to home page
+        ImageButton home = findViewById(R.id.imageButtonHome);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PersonalInformationDetailsPageActivity.this, HomepageActivity.class);
+                startActivity(intent);
+            }
+        });
+
         getUserPic(curUsername);
 
 
