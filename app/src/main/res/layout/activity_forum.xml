@@ -58,15 +58,15 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/forumPostsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/toWriteArticle"
+        android:layout_height="429dp"
+        android:layout_above="@+id/bottomNavigation"
         android:layout_below="@id/search_home"
-        android:layout_marginBottom="296dp"
+        android:layout_marginBottom="113dp"
         android:orientation="vertical" />
 
     <!-- Floating action button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@id/toWriteArticle"
+        android:id="@+id/toWriteArticle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottomNavigation"
