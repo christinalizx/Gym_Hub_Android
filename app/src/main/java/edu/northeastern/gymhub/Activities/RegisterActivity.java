@@ -135,11 +135,11 @@ public class RegisterActivity extends AppCompatActivity implements Callback {
 
         // TODO UNCOMMENT THE FOLLOWING CODE TO RE-ENABLE EMAIL VERIFICATION CHECKING
 
-//        // Check if the email is a valid email address
-//        if (!isValidEmail(email.getText().toString())) {
-//            showToast("Please enter a valid email address.");
-//            return;
-//        }
+        // Check if the email is a valid email address
+        if (!isValidEmail(email.getText().toString())) {
+            showToast("Please enter a valid email address.");
+            return;
+        }
 
         String inputUsername = username.getText().toString();
         usersRef.child(inputUsername).addListenerForSingleValueEvent(new ValueEventListener() {
