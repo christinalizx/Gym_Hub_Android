@@ -11,13 +11,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <!-- Header Section -->
+        <!-- Top Title Section -->
+        <TextView
+            android:id="@+id/textViewHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your Profile"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textColor="@color/white"
+            android:background="@color/darkPurple" />
     <LinearLayout
         android:id="@+id/header"
         android:padding="10dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="150dp">
+        android:layout_height="150dp"
+        android:layout_below="@+id/textViewHeader">
 
         <!-- Profile Image -->
         <edu.northeastern.gymhub.Utils.CircleImageView
