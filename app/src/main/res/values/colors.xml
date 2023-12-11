@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="darkPurple">#22092C</color>
+    <color name="darkPurple2">#300d3f</color>
+    <color name="darkRed">#872341</color>
+    <color name="red">#BE3144</color>
+    <color name="orange">#F05941</color>
+    <color name="yellow">#EFBB24</color>
+    <color name="lightRed">#dc7986</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="gray">#F7F7F7</color>
+    <color name="tab_selected">#1296db</color>
+    <color name="tab_unselected">#cdcdcd</color>
+    <color name="colorBlack">#000000</color>
+    <color name="articleUserNameColor">#D66C26</color>
+    <color name="send">#FDCD9B</color>
+    <color name="pink">#FFC0CB</color>
+    <color name="touming">#11512124</color>
+    <color name="register_color">#00ACC1</color>
+    <color name="transparent">#00000000</color>
+    <color name="grey">#7A7676</color>
+    <color name="purple">#E680F8</color>
+    <color name="lightGreen">#B1B479</color>
+    <color name="darkestPurple">#190720</color>
+    <color name="lightPurple">#D1C4E9</color>
+    <color name="lightPurple2">#f2eef9</color>
+    <color name="green">#2bd47c</color>
+
+</resources>

@@ -1,0 +1,11 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    style="?android:attr/spinnerDropDownItemStyle"
+    android:singleLine="true"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:ellipsize="marquee"
+    android:textSize="24sp"
+    android:textColor="@android:color/black"
+    android:drawableLeft="@drawable/ic_workout"
+    android:drawablePadding="4dp" />

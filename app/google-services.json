@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "52261982780",
+    "firebase_url": "https://gymhub-7a220-default-rtdb.firebaseio.com",
+    "project_id": "gymhub-7a220",
+    "storage_bucket": "gymhub-7a220.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:52261982780:android:e70e34dfb731f4a621e939",
+        "android_client_info": {
+          "package_name": "edu.northeastern.gymhub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQzHZcff11YbknZxLRBycezllQQf1AomM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:52261982780:android:3f59e5e727f0706621e939",
+        "android_client_info": {
+          "package_name": "edu.northeastern.testapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQzHZcff11YbknZxLRBycezllQQf1AomM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
