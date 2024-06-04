@@ -14,6 +14,36 @@ Integrating fitness into your life has never been easier. GymHub, your ultimate 
 -	Use communication forums to connect with fellow gym goers
 -	Comment and like other user’s posts
 
+## Screenshots
+<table>
+  <tr>
+    <td><img src="https://github.com/christinalizx/Gym_Hub_Android/assets/120531026/25896a33-71bb-4086-bdda-655d01799817"
+width=270 height=500></td>
+    <td><img src="https://github.com/christinalizx/Gym_Hub_Android/assets/120531026/d2f0b84d-4524-4b84-9913-b55277418031"
+width=270 height=500></td>
+  </tr>
+  <tr>
+    <td> <img src="https://github.com/christinalizx/Gym_Hub_Android/assets/120531026/10f8120b-98e6-4214-8fbf-2bdd14a29f9d"
+width=270 height=500> </td>
+    <td><img src="https://github.com/christinalizx/Gym_Hub_Android/assets/120531026/c0e00cb5-666e-4ac2-b7a5-cda48fb039c7"
+width=270 height=500> </td>
+  </tr>
+  <tr>
+    <td> <img src="https://github.com/christinalizx/Gym_Hub_Android/assets/120531026/6ffcf018-69bb-4ab4-8fb4-9a697776a044"
+width=270 height=500> </td>
+    <td><img src="https://github.com/christinalizx/Gym_Hub_Android/assets/120531026/efb8aa26-a02a-4c06-ab8f-e11c0c18ff32"
+width=270 height=500> </td>
+  </tr>
+    <tr>
+    <td> <img src="https://github.com/christinalizx/Gym_Hub_Android/assets/120531026/b4074acc-8176-4ce7-8f0c-de2b0a6462e2"
+width=270 height=500> </td>
+    <td><img src="https://github.com/christinalizx/Gym_Hub_Android/assets/120531026/4f57614d-7f3f-4b83-8968-537091ba0de5"
+width=270 height=500> </td>
+  </tr>
+  
+ </table>
+
+
 ## Contributors
 
 **Zixi Li**
